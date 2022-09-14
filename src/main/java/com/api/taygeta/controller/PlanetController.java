@@ -1,8 +1,9 @@
 package com.api.taygeta.controller;
 
-import com.api.taygeta.services.MissionService;
 import com.api.taygeta.entities.PlanetEntity;
+import com.api.taygeta.services.PlanetService;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/planets")
 public class PlanetController {
 
-  private final MissionService missionService;
+  private final PlanetService planetService;
 
-  public PlanetController(MissionService missionService) {
-    this.missionService = missionService;
+  public PlanetController(PlanetService planetService) {
+    this.planetService = planetService;
   }
 
+  @GetMapping()
+  public ResponseEntity<List<PlanetEntity>> getPlanets() {
+    return planetService.getPlanets();
+  }
 
 
 
