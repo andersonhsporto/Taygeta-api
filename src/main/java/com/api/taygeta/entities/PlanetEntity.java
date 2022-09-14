@@ -24,6 +24,10 @@ public class PlanetEntity {
   @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL)
   private List<ProbeEntity> probes = new ArrayList<>();
 
+  public PlanetEntity(Long width, Long height) {
+    this.width = width;
+    this.height = height;
+  }
 
   public PlanetEntity() { }
 

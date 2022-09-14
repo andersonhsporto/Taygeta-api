@@ -24,7 +24,13 @@ public class PlanetService {
     } else {
       return ResponseEntity.ok(planets);
     }
+  }
 
+  public ResponseEntity<String> makePlanet() {
+
+    PlanetEntity planet = new PlanetEntity(5L,5L);
+    planetRepository.save(planet);
+    return ResponseEntity.ok("Planet created");
   }
 
 }
