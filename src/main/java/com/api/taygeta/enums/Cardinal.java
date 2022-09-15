@@ -1,4 +1,4 @@
-package com.api.taygeta.models;
+package com.api.taygeta.enums;
 
 public enum Cardinal {
   NORTH,
