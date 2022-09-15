@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,14 +32,14 @@ public class PlanetController {
     return planetService.getPlanetById(id);
   }
 
-  @PostMapping("/{string}")
-  public ResponseEntity<String> createPlanet(@PathVariable String string) {
-    return planetService.makePlanet(string);
+  @PostMapping
+  public ResponseEntity<String> createPlanet(@RequestParam String area) {
+    return planetService.makePlanet(area);
   }
 
-  @PutMapping("/{id}/{string}")
-  public ResponseEntity<String> updatePlanet(@PathVariable Long id, @PathVariable String string) {
-    return planetService.updatePlanet(id, string);
+  @PutMapping
+  public ResponseEntity<String> updatePlanet(@RequestParam Long id, @RequestParam String area) {
+    return planetService.updatePlanet(id, area);
   }
 
 }
