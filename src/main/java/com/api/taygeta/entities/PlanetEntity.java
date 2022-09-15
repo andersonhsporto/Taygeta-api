@@ -18,33 +18,47 @@ public class PlanetEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private Long width;
-  private Long height;
+  private Integer width;
+  private Integer height;
 
   @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL)
-  private List<ProbeEntity> probes = new ArrayList<>();
+  private final List<ProbeEntity> probes = new ArrayList<>();
 
-  public PlanetEntity(Long width, Long height) {
+  public PlanetEntity(Integer width, Integer height) {
     this.width = width;
     this.height = height;
   }
 
-  public PlanetEntity() { }
+  public PlanetEntity() {
+  }
+
+  public static PlanetEntity fromString(String string) {
+    String[] sides = string.split("x");
+
+    return new PlanetEntity(Integer.parseInt(sides[0]), Integer.parseInt(sides[1]));
+  }
 
   public Long getId() {
     return id;
   }
 
-  public Long getWidth() {
+  public Integer getWidth() {
     return width;
   }
 
-  public Long getHeight() {
+  public Integer getHeight() {
     return height;
   }
 
-  public Long getArea() {
+  public Integer getArea() {
     return width * height;
+  }
+
+  public void updateSizes(String string) {
+    String[] sides = string.split("x");
+
+    this.width = Integer.parseInt(sides[0]);
+    this.height = Integer.parseInt(sides[1]);
   }
 
   @Override
