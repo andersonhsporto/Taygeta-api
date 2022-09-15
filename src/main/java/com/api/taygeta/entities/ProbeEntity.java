@@ -1,6 +1,6 @@
 package com.api.taygeta.entities;
 
-import com.api.taygeta.models.Cardinal;
+import com.api.taygeta.enums.Cardinal;
 import java.awt.Point;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -32,7 +32,8 @@ public class ProbeEntity {
     this.planet = planet;
   }
 
-  public ProbeEntity() {}
+  public ProbeEntity() {
+  }
 
   public Long getId() {
     return id;
