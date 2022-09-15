@@ -28,16 +28,6 @@ public class PlanetService {
     }
   }
 
-  public ResponseEntity<String> makePlanet(String string) {
-    if (commandInPlanetSizeFormat(string)) {
-      var planetEntity = PlanetEntity.fromString(string);
-      planetRepository.save(planetEntity);
-      return ResponseEntity.ok("Planet created");
-    } else {
-      return new ResponseEntity<>("Invalid planet size", HttpStatus.BAD_REQUEST);
-    }
-  }
-
   public ResponseEntity<Object> getPlanetById(Long id) {
     var planet = planetRepository.findById(id);
 
@@ -45,6 +35,17 @@ public class PlanetService {
       return ResponseEntity.ok(PlanetDTO.fromEntity(planet.get()));
     } else {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+    }
+  }
+
+  public ResponseEntity<String> makePlanet(String string) {
+    if (commandInPlanetSizeFormat(string)) {
+      var planetEntity = PlanetEntity.fromString(string);
+
+      planetRepository.save(planetEntity);
+      return ResponseEntity.ok("Planet created");
+    } else {
+      return new ResponseEntity<>("Invalid planet size", HttpStatus.BAD_REQUEST);
     }
   }
 
