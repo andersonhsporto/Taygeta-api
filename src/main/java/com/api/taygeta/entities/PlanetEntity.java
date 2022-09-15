@@ -50,6 +50,10 @@ public class PlanetEntity {
     return height;
   }
 
+  public List<ProbeEntity> getProbes() {
+    return probes;
+  }
+
   public Integer getArea() {
     return width * height;
   }
@@ -59,6 +63,18 @@ public class PlanetEntity {
 
     this.width = Integer.parseInt(sides[0]);
     this.height = Integer.parseInt(sides[1]);
+  }
+
+  public Integer getProbesCount() {
+    return probes.size();
+  }
+
+  public boolean isFull() {
+    return Objects.equals(getProbesCount(), getArea());
+  }
+
+  public void addProbe(ProbeEntity probe) {
+    probes.add(probe);
   }
 
   @Override
