@@ -3,7 +3,6 @@ package com.api.taygeta.entities;
 import com.api.taygeta.enums.Cardinal;
 import java.awt.Point;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,7 +25,7 @@ public class ProbeEntity {
   @Enumerated(EnumType.STRING)
   private Cardinal cardinal;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   private PlanetEntity planet;
 
   public ProbeEntity(Point position, Cardinal cardinal, PlanetEntity planet) {
@@ -54,8 +53,6 @@ public class ProbeEntity {
     return planet;
   }
 
-
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -76,11 +73,11 @@ public class ProbeEntity {
 
   @Override
   public String toString() {
-    return "ProbeEntity{" +
-        "id=" + id +
-        ", position=" + position +
-        ", cardinal=" + cardinal +
-        ", planet=" + planet +
+    return "ProbeEntity { " +
+        "id = " + id +
+        ", position = " + position +
+        ", cardinal = " + cardinal +
+        ", planet = " + planet +
         '}';
   }
 }
