@@ -8,6 +8,7 @@ import com.api.taygeta.exceptions.InvalidCardinalException;
 import com.api.taygeta.repositories.PlanetRepository;
 import com.api.taygeta.repositories.ProbeRepository;
 import java.awt.Point;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,18 @@ public class ProbeService {
     this.planetRepository = planetRepository;
   }
 
-  public ResponseEntity<Object> getProbes() {
+  public ResponseEntity<Object> getAllProbes() {
     var probes = probeRepository.findAll();
 
     if (probes.isEmpty()) {
       return new ResponseEntity<>("No probes found", HttpStatus.NOT_FOUND);
     } else {
-      return new ResponseEntity<>(probes, HttpStatus.OK);
+      return new ResponseEntity<>(convertListEntityToDto(probes), HttpStatus.OK);
     }
+  }
+
+  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
+    return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
   public ResponseEntity<Object> getProbeById(Long id) {
@@ -51,18 +56,40 @@ public class ProbeService {
     var point = new Point(x, y);
 
     if (!isValidParameters(planet, point, direction)) {
-      return new ResponseEntity<>("Invalid parameters", HttpStatus.BAD_REQUEST);
+      return invalidResponseEntity(planet, point, direction);
     } else {
-      var cardinal = parseCardinal(direction);
-      var probeEntity = new ProbeEntity(point, cardinal, planet.get());
-      planet.get().addProbe(probeEntity);
-      planetRepository.save(planet.get());
-      return ResponseEntity.ok("Probe created");
+      return saveProbe(planet, point, direction);
     }
-
   }
 
-  public boolean isValidParameters(Optional<PlanetEntity> planet, Point coordinates, String direction) {
+  private ResponseEntity<Object> invalidResponseEntity(
+      Optional<PlanetEntity> planet, Point coordinates, String direction) {
+
+    if (planet.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+    } else if (existProbeInCoordinates(planet, coordinates)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
+    } else if (!isValidCardinal(direction)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
+    } else {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid parameters");
+    }
+  }
+
+  private ResponseEntity<Object> saveProbe(
+      Optional<PlanetEntity> planet, Point point, String direction) {
+
+    var cardinal = parseCardinal(direction);
+    var probeEntity = new ProbeEntity(point, cardinal, planet.get());
+
+    planet.get().addProbe(probeEntity);
+    planetRepository.save(planet.get());
+    return ResponseEntity.ok("Probe created");
+  }
+
+  public boolean isValidParameters(
+      Optional<PlanetEntity> planet, Point coordinates, String direction) {
+
     if (planet.isEmpty()) {
       return false;
     } else if (existProbeInCoordinates(planet, coordinates)) {
