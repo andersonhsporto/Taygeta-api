@@ -21,10 +21,33 @@ public class ProbeService {
   private final ProbeRepository probeRepository;
   private final PlanetRepository planetRepository;
 
+  private final MovementService movementService;
+
+
   @Autowired
-  public ProbeService(ProbeRepository probeRepository, PlanetRepository planetRepository) {
+  public ProbeService(
+      ProbeRepository probeRepository,
+      PlanetRepository planetRepository,
+      MovementService movementService) {
     this.probeRepository = probeRepository;
     this.planetRepository = planetRepository;
+    this.movementService = movementService;
+  }
+
+  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
+    return probes.stream().map(ProbeDTO::fromEntity).toList();
+  }
+
+  public static Cardinal parseCardinal(String command) throws InvalidCardinalException {
+    String lowerCaseCommand = command.toLowerCase();
+
+    return switch (lowerCaseCommand) {
+      case "north", "norte", "n" -> Cardinal.NORTH;
+      case "south", "sul", "s" -> Cardinal.SOUTH;
+      case "east", "leste", "e", "l" -> Cardinal.EAST;
+      case "west", "oeste", "w", "o" -> Cardinal.WEST;
+      default -> throw new InvalidCardinalException("Invalid Cardinal");
+    };
   }
 
   public ResponseEntity<Object> getAllProbes() {
@@ -35,10 +58,6 @@ public class ProbeService {
     } else {
       return new ResponseEntity<>(convertListEntityToDto(probes), HttpStatus.OK);
     }
-  }
-
-  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
-    return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
   public ResponseEntity<Object> getProbeById(Long id) {
@@ -68,7 +87,8 @@ public class ProbeService {
     if (planet.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
     } else if (existProbeInCoordinates(planet, coordinates)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body("Probe already exists in coordinates");
     } else if (!isValidCardinal(direction)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
     } else {
@@ -94,8 +114,9 @@ public class ProbeService {
       return false;
     } else if (existProbeInCoordinates(planet, coordinates)) {
       return false;
-    } else
+    } else {
       return isValidCardinal(direction) && isValidCoordinate(planet, coordinates);
+    }
   }
 
   public boolean existProbeInCoordinates(Optional<PlanetEntity> planet, Point coordinates) {
@@ -103,6 +124,7 @@ public class ProbeService {
 
     return probes.stream().anyMatch(probe -> probe.getPosition().equals(coordinates));
   }
+
   public boolean isValidCoordinate(Optional<PlanetEntity> planet, Point coordinates) {
     var planetWidth = planet.get().getWidth();
     var planetHeight = planet.get().getHeight();
@@ -113,16 +135,20 @@ public class ProbeService {
         coordinates.y < planetHeight;
   }
 
-  public static Cardinal parseCardinal(String command) throws InvalidCardinalException {
-    String lowerCaseCommand = command.toLowerCase();
+  public ResponseEntity<Object> moveProbe(Long id, String movements) {
+    var probe = probeRepository.findById(id);
 
-    return switch (lowerCaseCommand) {
-      case "north", "norte", "n" -> Cardinal.NORTH;
-      case "south", "sul", "s" -> Cardinal.SOUTH;
-      case "east", "leste", "e", "l" -> Cardinal.EAST;
-      case "west", "oeste", "w", "o" -> Cardinal.WEST;
-      default -> throw new InvalidCardinalException("Invalid Cardinal");
-    };
+    if (probe.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Probe not found");
+    } else if (!isValidMovements(movements)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid movements sequence");
+    } else {
+      return movementService.moveProbe(probe.get(), movements);
+    }
+  }
+
+  public boolean isValidMovements(String movementsSequence) {
+    return movementsSequence.matches("^[MLR]+$");
   }
 
   public boolean isValidCardinal(String command) {
