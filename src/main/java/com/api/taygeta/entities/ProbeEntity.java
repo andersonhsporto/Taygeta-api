@@ -45,6 +45,10 @@ public class ProbeEntity {
     return position;
   }
 
+  public void setPosition(Point position) {
+    this.position = position;
+  }
+
   public Cardinal getCardinal() {
     return cardinal;
   }
@@ -52,6 +56,24 @@ public class ProbeEntity {
   public PlanetEntity getPlanet() {
     return planet;
   }
+
+  public void rotateLeft() {
+    this.cardinal = this.cardinal.rotateLeft();
+  }
+
+  public void rotateRight() {
+    this.cardinal = this.cardinal.rotateRight();
+  }
+
+  public void moveForward() {
+    switch (this.cardinal) {
+      case NORTH -> this.position.translate(0, 1);
+      case SOUTH -> this.position.translate(0, -1);
+      case EAST -> this.position.translate(1, 0);
+      case WEST -> this.position.translate(-1, 0);
+    }
+  }
+
 
   @Override
   public boolean equals(Object o) {
