@@ -51,7 +51,8 @@ public class PlanetService {
     if (planet.isEmpty()) {
       return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
     } else {
-      return new ResponseEntity<>(ProbeService.convertListEntityToDto(planet.get().getProbes()), HttpStatus.OK);
+      return new ResponseEntity<>(ProbeService.convertListEntityToDto(planet.get().getProbes()),
+          HttpStatus.OK);
     }
   }
 

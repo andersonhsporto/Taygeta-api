@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,18 +22,18 @@ public class ProbeController {
     this.probeService = probeService;
   }
 
-  @GetMapping()
-  public ResponseEntity<Object> getProbes() {
-    return probeService.getProbes();
+  @GetMapping
+  public ResponseEntity<Object> getAllProbes() {
+    return probeService.getAllProbes();
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Object> getProbeById(@PathVariable Long id) {
-    return probeService.getProbeById(id);
+  @GetMapping("/{probeId}")
+  public ResponseEntity<Object> getByProbeId(@PathVariable Long probeId) {
+    return probeService.getProbeById(probeId);
   }
 
   @PostMapping
-  public ResponseEntity<Object> createProbe(
+  public ResponseEntity<Object> makeProbe(
       @RequestParam Long planetId,
       @RequestParam Integer x,
       @RequestParam Integer y,
@@ -41,6 +42,9 @@ public class ProbeController {
     return probeService.makeProbe(planetId, x, y, direction);
   }
 
-
+  @PutMapping
+  public ResponseEntity<?> moveProbe(@RequestParam Long probeId, @RequestParam String movements) {
+    return probeService.moveProbe(probeId, movements);
+  }
 
 }
