@@ -4,13 +4,16 @@ import com.api.taygeta.entities.ProbeEntity;
 import com.api.taygeta.enums.Cardinal;
 import java.awt.Point;
 
-public record ProbeDTO(Long id, Point position, Cardinal cardinal, PlanetDTO planet) {
+public record ProbeDTO(Long id,
+                       Point position,
+                       Cardinal cardinal,
+                       Long PlanetId) {
 
   public static ProbeDTO fromEntity(ProbeEntity probe) {
     return new ProbeDTO(
         probe.getId(),
         probe.getPosition(),
         probe.getCardinal(),
-        PlanetDTO.fromEntity(probe.getPlanet()));
+        probe.getPlanet().getId());
   }
 }
