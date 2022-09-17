@@ -3,6 +3,9 @@ package com.api.taygeta.services;
 import com.api.taygeta.dto.PlanetDTO;
 import com.api.taygeta.entities.PlanetEntity;
 import com.api.taygeta.repositories.PlanetRepository;
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +21,37 @@ public class PlanetService {
     this.planetRepository = planetRepository;
   }
 
-  public ResponseEntity<Object> getPlanets() {
+  public ResponseEntity<?> getAllPlanets() {
     var planets = planetRepository.findAll();
 
     if (planets.isEmpty()) {
       return new ResponseEntity<>("No planets found", HttpStatus.NOT_FOUND);
     } else {
-      return new ResponseEntity<>(planets, HttpStatus.OK);
+      return new ResponseEntity<>(convertListEntityToDTO(planets), HttpStatus.OK);
     }
+  }
+
+  private List<PlanetDTO> convertListEntityToDTO(List<PlanetEntity> planets) {
+    return planets.stream().map(PlanetDTO::fromEntity).toList();
   }
 
   public ResponseEntity<Object> getPlanetById(Long id) {
     var planet = planetRepository.findById(id);
 
-    if (planet.isPresent()) {
-      return ResponseEntity.ok(PlanetDTO.fromEntity(planet.get()));
+    if (planet.isEmpty()) {
+      return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+      return new ResponseEntity<>(PlanetDTO.fromEntity(planet.get()), HttpStatus.OK);
+    }
+  }
+
+  public ResponseEntity<Object> getPlanetProbeById(Long id) {
+    var planet = planetRepository.findById(id);
+
+    if (planet.isEmpty()) {
+      return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
+    } else {
+      return new ResponseEntity<>(ProbeService.convertListEntityToDto(planet.get().getProbes()), HttpStatus.OK);
     }
   }
 
@@ -66,6 +83,38 @@ public class PlanetService {
       return ResponseEntity.ok("Planet updated");
     } else {
       return new ResponseEntity<>("Invalid planet size", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  public ResponseEntity<Object> deletePlanet(Long id) {
+    var planet = planetRepository.findById(id);
+
+    if (planet.isPresent()) {
+      planetRepository.delete(planet.get());
+      return ResponseEntity.ok("Planet deleted");
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+    }
+  }
+
+  @Transactional
+  public ResponseEntity<Object> deletePlanetProbes(Long id) {
+    var planet = planetRepository.findById(id);
+
+    if (planet.isPresent()) {
+      return deleteProbesList(planet);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+    }
+  }
+
+  public ResponseEntity<Object> deleteProbesList(Optional<PlanetEntity> planet) {
+    if (planet.get().getProbesCount() > 0) {
+      planet.get().getProbes().removeAll(planet.get().getProbes());
+      planetRepository.save(planet.get());
+      return ResponseEntity.ok("Probes deleted");
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No probes found");
     }
   }
 
