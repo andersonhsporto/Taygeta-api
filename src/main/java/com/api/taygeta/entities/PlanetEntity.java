@@ -15,14 +15,13 @@ import javax.persistence.Table;
 @Table(name = "planets")
 public class PlanetEntity {
 
+  @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL, orphanRemoval = true)
+  private final List<ProbeEntity> probes = new ArrayList<>();
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private Integer width;
   private Integer height;
-
-  @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL)
-  private final List<ProbeEntity> probes = new ArrayList<>();
 
   public PlanetEntity(Integer width, Integer height) {
     this.width = width;
