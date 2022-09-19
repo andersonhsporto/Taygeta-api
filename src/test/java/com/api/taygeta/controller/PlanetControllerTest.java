@@ -6,9 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.api.taygeta.entities.PlanetEntity;
+import com.api.taygeta.repositories.PlanetRepository;
 import com.api.taygeta.services.PlanetService;
 import com.api.taygeta.services.ProbeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,16 @@ import org.springframework.transaction.annotation.Transactional;
 class PlanetControllerTest {
 
   @Autowired
-  public PlanetService planetService;
+  private PlanetService planetService;
+
   @Autowired
-  public ProbeService probeService;
+  private ProbeService probeService;
+
+  @Autowired
+  private PlanetRepository planetRepository;
+
   @Autowired
   private MockMvc mockMvc;
-  @Autowired
-  private ObjectMapper objectMapper;
 
   @Test
   @DisplayName("Test if get all planets return http status 204")
@@ -82,18 +86,21 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if get planet by id return http 200")
   void shouldReturnPlanet() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x5");
+    planetRepository.save(planet);
 
-    mockMvc.perform(get("/api/v1/planets/1"))
+    mockMvc.perform(get("/api/v1/planets/" + planet.getId()))
         .andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Test if get planet by id return json")
   void shouldReturnPlanetJson() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x5");
 
-    mockMvc.perform(get("/api/v1/planets/1"))
+    planetRepository.save(planet);
+
+    mockMvc.perform(get("/api/v1/planets/" + planet.getId()))
         .andExpectAll(
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType("application/json"),
@@ -116,9 +123,11 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if get planet probes return http 204")
   void shouldReturnPlanetProbesNotFoundIfProbeAreMissing() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x5");
 
-    mockMvc.perform(get("/api/v1/planets/1/probes"))
+    planetRepository.save(planet);
+
+    mockMvc.perform(get("/api/v1/planets/"+ planet.getId() + "/probes"))
         .andExpect(status().isNoContent())
         .andExpect(content().string("No probes found"));
   }
@@ -126,20 +135,24 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if get planet probes return http 200")
   void shouldReturnPlanetProbes() throws Exception {
-    planetService.makePlanet("5x5");
-    probeService.makeProbe(1L, 1, 1, "Norte");
+    var planet = PlanetEntity.fromString("5x5");
 
-    mockMvc.perform(get("/api/v1/planets/1/probes"))
+    planetRepository.save(planet);
+    probeService.makeProbe(planet.getId(), 1, 1, "Norte");
+
+    mockMvc.perform(get("/api/v1/planets/" + planet.getId() + "/probes"))
         .andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Test if get planet probes return json")
   void shouldReturnPlanetProbesJson() throws Exception {
-    planetService.makePlanet("5x5");
-    probeService.makeProbe(1L, 1, 1, "Norte");
+    var planet = PlanetEntity.fromString("5x5");
 
-    mockMvc.perform(get("/api/v1/planets/1/probes")).andDo(print())
+    planetRepository.save(planet);
+    probeService.makeProbe(planet.getId(), 1, 1, "Norte");
+
+    mockMvc.perform(get("/api/v1/planets/" + planet.getId() + "/probes")).andDo(print())
         .andExpectAll(
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType("application/json"),
@@ -155,11 +168,13 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if get planet probes return json with 2 probes")
   void shouldReturnPlanetProbesIfProbesAreValid() throws Exception {
-    planetService.makePlanet("5x5");
-    probeService.makeProbe(1L, 1, 1, "Norte");
-    probeService.makeProbe(1L, 1, 2, "Leste");
+    var planet = PlanetEntity.fromString("5x5");
 
-    mockMvc.perform(get("/api/v1/planets/1/probes"))
+    planetRepository.save(planet);
+    probeService.makeProbe(planet.getId(), 1, 1, "Norte");
+    probeService.makeProbe(planet.getId(), 1, 2, "Leste");
+
+    mockMvc.perform(get("/api/v1/planets/" + planet.getId() + "/probes"))
         .andExpectAll(
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.content().contentType("application/json"),
@@ -200,20 +215,24 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if put planet return http 200")
   void shouldReturnPlanetUpdated() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x5");
+
+    planetRepository.save(planet);
 
     mockMvc.perform(MockMvcRequestBuilders
-            .put("/api/v1/planets?id=1&area=4x5"))
+            .put("/api/v1/planets?id=" + planet.getId() + "&area=4x5"))
         .andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Test if put planet return http 404")
   void shouldReturnPlanetNotUpdatedIfAreaStringIsInvalid() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x50");
+
+    planetRepository.save(planet);
 
     mockMvc.perform(MockMvcRequestBuilders
-            .put("/api/v1/planets?id=1&area=4xINVALID"))
+            .put("/api/v1/planets?id=" + planet.getId() + "&area=4xINVALID"))
         .andExpect(status().isBadRequest());
   }
 
@@ -229,23 +248,26 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if delete planet return http 200")
   void shouldReturnPlanetDeleted() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("5x5");
+
+    planetRepository.save(planet);
 
     mockMvc.perform(MockMvcRequestBuilders
-            .delete("/api/v1/planets/1"))
+            .delete("/api/v1/planets/" + planet.getId()))
         .andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Test if planet is deleted in delete planet")
   void shouldReturnPlanetDeletedInGetPlanet() throws Exception {
-    planetService.makePlanet("5x5");
+    var planet = PlanetEntity.fromString("7x7");
 
+    planetRepository.save(planet);
     mockMvc.perform(MockMvcRequestBuilders
-            .delete("/api/v1/planets/1"))
+            .delete("/api/v1/planets/"+ planet.getId()))
         .andExpect(status().isOk());
 
-    mockMvc.perform(get("/api/v1/planets/1"))
+    mockMvc.perform(get("/api/v1/planets/"+ planet.getId()))
         .andExpect(status().isNoContent())
         .andExpect(content().string("Planet not found"));
   }
@@ -254,7 +276,7 @@ class PlanetControllerTest {
   @DisplayName("Test if delete planet probes return http 204")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidDeleteProbes() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
-            .delete("/api/v1/planets/4/probes"))
+            .delete("/api/v1/planets/42/probes"))
         .andExpect(status().isNoContent())
         .andExpect(content().string("Planet not found"));
   }
@@ -262,26 +284,29 @@ class PlanetControllerTest {
   @Test
   @DisplayName("Test if delete planet probes return http 200")
   void shouldReturnPlanetProbesDeleted() throws Exception {
-    planetService.makePlanet("5x5");
-    probeService.makeProbe(1L, 1, 1, "Norte");
+    var planet = PlanetEntity.fromString("5x5");
+
+    planetRepository.save(planet);
+    probeService.makeProbe(planet.getId(), 1, 1, "Norte");
 
     mockMvc.perform(MockMvcRequestBuilders
-            .delete("/api/v1/planets/1/probes"))
+            .delete("/api/v1/planets/"+ planet.getId() + "/probes"))
         .andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Test if delete planet probes only delete planet probes")
   void shouldReturnPlanetProbesDeletedInGetPlanetProbes() throws Exception {
-    planetService.makePlanet("5x5");
-    probeService.makeProbe(1L, 1, 1, "Norte");
-    probeService.makeProbe(1L, 1, 2, "Leste");
+    var planet = PlanetEntity.fromString("5x5");
+
+    planetRepository.save(planet);
+    probeService.makeProbe(planet.getId(), 1, 1, "Norte");
 
     mockMvc.perform(MockMvcRequestBuilders
-            .delete("/api/v1/planets/1/probes"))
+            .delete("/api/v1/planets/"+ planet.getId() + "/probes"))
         .andExpect(status().isOk());
 
-    mockMvc.perform(get("/api/v1/planets/1/probes"))
+    mockMvc.perform(get("/api/v1/planets/"+ planet.getId() + "/probes"))
         .andExpect(status().isNoContent())
         .andExpect(content().string("No probes found"));
   }
