@@ -1,0 +1,23 @@
+services:
+  app:
+    image: 'taygeta-api-v1:latest'
+    container_name: api-taygeta
+    build:
+      context: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+    env_file:
+      - '.env'
+
+  database:
+    image: 'postgres:14-alpine'
+    container_name: postgres-taygeta
+    ports:
+      - '5432:5432'
+    env_file:
+      - '.env'
+
+volumes:
+  volumes:
