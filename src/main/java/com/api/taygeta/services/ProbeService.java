@@ -53,7 +53,7 @@ public class ProbeService {
     var probes = probeRepository.findAll();
 
     if (probes.isEmpty()) {
-      return new ResponseEntity<>("No probes found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("No probes found", HttpStatus.NO_CONTENT);
     } else {
       return new ResponseEntity<>(convertListEntityToDto(probes), HttpStatus.OK);
     }
@@ -65,7 +65,7 @@ public class ProbeService {
     if (probe.isPresent()) {
       return ResponseEntity.ok(ProbeDTO.fromEntity(probe.get()));
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
     }
   }
 
@@ -138,7 +138,7 @@ public class ProbeService {
     var probe = probeRepository.findById(id);
 
     if (probe.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
     } else if (!isValidMovements(movements)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid movements sequence");
     } else {
