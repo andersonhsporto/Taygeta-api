@@ -25,7 +25,7 @@ public class PlanetService {
     var planets = planetRepository.findAll();
 
     if (planets.isEmpty()) {
-      return new ResponseEntity<>("No planets found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("No planets found", HttpStatus.NO_CONTENT);
     } else {
       return new ResponseEntity<>(convertListEntityToDTO(planets), HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class PlanetService {
     var planet = planetRepository.findById(id);
 
     if (planet.isEmpty()) {
-      return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Planet not found", HttpStatus.NO_CONTENT);
     } else {
       return new ResponseEntity<>(PlanetDTO.fromEntity(planet.get()), HttpStatus.OK);
     }
@@ -49,7 +49,9 @@ public class PlanetService {
     var planet = planetRepository.findById(id);
 
     if (planet.isEmpty()) {
-      return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Planet not found", HttpStatus.NO_CONTENT);
+    } else if (planet.get().getProbes().isEmpty()) {
+      return new ResponseEntity<>("No probes found", HttpStatus.NO_CONTENT);
     } else {
       return new ResponseEntity<>(ProbeService.convertListEntityToDto(planet.get().getProbes()),
           HttpStatus.OK);
@@ -73,7 +75,7 @@ public class PlanetService {
     if (planet.isPresent()) {
       return updatePlanetEntity(planet.get(), string);
     } else {
-      return new ResponseEntity<>("Planet not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Planet not found", HttpStatus.NO_CONTENT);
     }
   }
 
@@ -94,7 +96,7 @@ public class PlanetService {
       planetRepository.delete(planet.get());
       return ResponseEntity.ok("Planet deleted");
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
     }
   }
 
@@ -105,7 +107,7 @@ public class PlanetService {
     if (planet.isPresent()) {
       return deleteProbesList(planet);
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
     }
   }
 
@@ -115,7 +117,7 @@ public class PlanetService {
       planetRepository.save(planet.get());
       return ResponseEntity.ok("Probes deleted");
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No probes found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No probes found");
     }
   }
 
