@@ -4,7 +4,6 @@ import com.api.taygeta.dto.ProbeDTO;
 import com.api.taygeta.entities.PlanetEntity;
 import com.api.taygeta.entities.ProbeEntity;
 import com.api.taygeta.enums.Cardinal;
-import com.api.taygeta.exceptions.InvalidCardinalException;
 import com.api.taygeta.repositories.PlanetRepository;
 import com.api.taygeta.repositories.ProbeRepository;
 import java.awt.Point;
@@ -38,7 +37,7 @@ public class ProbeService {
     return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
-  public static Cardinal parseCardinal(String command) throws InvalidCardinalException {
+  public static Cardinal parseCardinal(String command) {
     String lowerCaseCommand = command.toLowerCase();
 
     return switch (lowerCaseCommand) {
@@ -46,7 +45,7 @@ public class ProbeService {
       case "south", "sul", "s" -> Cardinal.SOUTH;
       case "east", "leste", "e", "l" -> Cardinal.EAST;
       case "west", "oeste", "w", "o" -> Cardinal.WEST;
-      default -> throw new InvalidCardinalException("Invalid Cardinal");
+      default -> null;
     };
   }
 
