@@ -47,7 +47,7 @@ class PlanetControllerTest {
 
   @Test
   @DisplayName("Test if get all planet return http 200")
-  void shouldReturnPlanetList() throws Exception {
+  void shouldReturnPlanetListIfThereIsOnePlanet() throws Exception {
     planetService.makePlanet("5x5");
 
     mockMvc.perform(get("/api/v1/planets"))
@@ -56,7 +56,7 @@ class PlanetControllerTest {
 
   @Test
   @DisplayName("Test if get all planet return json")
-  void shouldReturnPlanetListJson() throws Exception {
+  void shouldReturnPlanetListJsonIfThereIsOnePlanet() throws Exception {
     planetService.makePlanet("5x5");
 
     mockMvc.perform(get("/api/v1/planets"))
@@ -73,7 +73,7 @@ class PlanetControllerTest {
 
   @Test
   @DisplayName("Test if get planet by id return http 204")
-  void shouldReturnPlanetNotFound() throws Exception {
+  void shouldReturnPlanetNotFoundIfThereIsNoPlanets() throws Exception {
     mockMvc.perform(get("/api/v1/planets/1"))
         .andExpect(status().isNoContent())
         .andExpect(content().string("Planet not found"));
