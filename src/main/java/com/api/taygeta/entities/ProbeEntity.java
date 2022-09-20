@@ -74,7 +74,6 @@ public class ProbeEntity {
     }
   }
 
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {

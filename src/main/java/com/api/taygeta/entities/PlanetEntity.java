@@ -64,6 +64,10 @@ public class PlanetEntity {
     this.height = Integer.parseInt(sides[1]);
   }
 
+  public void removeProbes(List<ProbeEntity> probes) {
+    probes.removeAll(probes);
+  }
+
   public Integer getProbesCount() {
     return probes.size();
   }

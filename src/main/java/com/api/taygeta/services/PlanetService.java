@@ -53,8 +53,8 @@ public class PlanetService {
     } else if (planet.get().getProbes().isEmpty()) {
       return new ResponseEntity<>("No probes found", HttpStatus.NO_CONTENT);
     } else {
-      return new ResponseEntity<>(ProbeService.convertListEntityToDto(planet.get().getProbes()),
-          HttpStatus.OK);
+      return new ResponseEntity<>(
+          ProbeService.convertListEntityToDto(planet.get().getProbes()), HttpStatus.OK);
     }
   }
 
@@ -113,7 +113,7 @@ public class PlanetService {
 
   public ResponseEntity<Object> deleteProbesList(Optional<PlanetEntity> planet) {
     if (planet.get().getProbesCount() > 0) {
-      planet.get().getProbes().removeAll(planet.get().getProbes());
+      planet.get().removeProbes(planet.get().getProbes());
       planetRepository.save(planet.get());
       return ResponseEntity.ok("Probes deleted");
     } else {
