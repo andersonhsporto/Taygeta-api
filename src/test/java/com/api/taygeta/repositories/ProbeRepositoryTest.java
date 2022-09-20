@@ -26,7 +26,7 @@ public class ProbeRepositoryTest {
   private PlanetRepository planetRepository;
 
   @Test
-  @DisplayName("Test if probe is saved")
+  @DisplayName("probe is saved")
   public void itShouldCheckIfProbeExists() {
     var planet = PlanetEntity.fromString("5x5");
     planetRepository.save(planet);
@@ -41,7 +41,7 @@ public class ProbeRepositoryTest {
   }
 
   @Test
-  @DisplayName("Test if findAll returns a list of probes")
+  @DisplayName("findAll returns a list of probes")
   public void itShouldCheckIfFindAllReturnsAListOfProbes() {
     var planet = PlanetEntity.fromString("5x5");
     planetRepository.save(planet);
@@ -61,7 +61,7 @@ public class ProbeRepositoryTest {
   }
 
   @Test
-  @DisplayName("Test if findById returns a probe")
+  @DisplayName("findById returns a probe")
   public void itShouldCheckIfFindByIdReturnsAProbe() {
     var planet = PlanetEntity.fromString("5x5");
     planetRepository.save(planet);
@@ -78,7 +78,7 @@ public class ProbeRepositoryTest {
   }
 
   @Test
-  @DisplayName("Test if deleteById deletes a probe")
+  @DisplayName("deleteById deletes a probe")
   public void itShouldCheckIfDeleteByIdDeletesAProbe() {
     var planet = PlanetEntity.fromString("5x5");
     planetRepository.save(planet);
@@ -94,7 +94,7 @@ public class ProbeRepositoryTest {
   }
 
   @Test
-  @DisplayName("Test if deleteAll deletes all probes")
+  @DisplayName("deleteAll deletes all probes")
   public void itShouldCheckIfDeleteAllDeletesAllProbes() {
     var planet = PlanetEntity.fromString("5x5");
     planetRepository.save(planet);

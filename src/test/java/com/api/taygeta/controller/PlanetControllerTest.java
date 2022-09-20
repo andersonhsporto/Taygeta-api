@@ -38,7 +38,7 @@ class PlanetControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  @DisplayName("Test if get all planets return http status 204")
+  @DisplayName("Get all planets return http status 204")
   void shouldReturnNoPlanetFoundIfThereIsNoPlanet() throws Exception {
     mockMvc.perform(get("/api/v1/planets"))
         .andExpect(status().isNoContent())
@@ -46,7 +46,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get all planet return http 200")
+  @DisplayName("Get all planet return http 200")
   void shouldReturnPlanetListIfThereIsOnePlanet() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -55,7 +55,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get all planet return json")
+  @DisplayName("Get all planet return json")
   void shouldReturnPlanetListJsonIfThereIsOnePlanet() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -72,7 +72,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet by id return http 204")
+  @DisplayName("Get planet by id return http 204")
   void shouldReturnPlanetNotFoundIfThereIsNoPlanets() throws Exception {
     mockMvc.perform(get("/api/v1/planets/1"))
         .andExpect(status().isNoContent())
@@ -80,7 +80,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet by id return http 200")
+  @DisplayName("Get planet by id return http 200")
   void shouldReturnPlanet() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -89,7 +89,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet by id return json")
+  @DisplayName("Get planet by id return json")
   void shouldReturnPlanetJson() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -106,7 +106,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet probes return http 204")
+  @DisplayName("Get planet probes return http 204")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalid() throws Exception {
     mockMvc.perform(get("/api/v1/planets/1/probes"))
         .andExpect(status().isNoContent())
@@ -114,7 +114,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet probes return http 204")
+  @DisplayName("Get planet probes return http 204")
   void shouldReturnPlanetProbesNotFoundIfProbeAreMissing() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -124,7 +124,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet probes return http 200")
+  @DisplayName("Get planet probes return http 200")
   void shouldReturnPlanetProbes() throws Exception {
     planetService.makePlanet("10x10");
     probeService.makeProbe(1L, 1, 1, "Norte");
@@ -134,7 +134,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet probes return json")
+  @DisplayName("Get planet probes return json")
   void shouldReturnPlanetProbesJson() throws Exception {
     planetService.makePlanet("10x10");
     probeService.makeProbe(1L, 1, 1, "Norte");
@@ -153,7 +153,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if get planet probes return json with 2 probes")
+  @DisplayName("Get planet probes return json with 2 probes")
   void shouldReturnPlanetProbesIfProbesAreValid() throws Exception {
     planetService.makePlanet("10x10");
     probeService.makeProbe(1L, 1, 1, "Norte");
@@ -173,7 +173,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if post planet return http 201")
+  @DisplayName("Post planet return http 201")
   void shouldReturnPlanetCreated() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .post("/api/v1/planets?area=5x5"))
@@ -181,7 +181,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if post planet return http 404")
+  @DisplayName("Post planet return http 404")
   void shouldReturnPlanetNotCreated() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .post("/api/v1/planets?area=5x"))
@@ -189,7 +189,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if put planet return http 204")
+  @DisplayName("Put planet return http 204")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidPut() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .put("/api/v1/planets?id=4&area=4x5"))
@@ -198,7 +198,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if put planet return http 200")
+  @DisplayName("Put planet return http 200")
   void shouldReturnPlanetUpdated() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -208,7 +208,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if put planet return http 404")
+  @DisplayName("Put planet return http 404")
   void shouldReturnPlanetNotUpdatedIfAreaStringIsInvalid() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -218,7 +218,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if delete planet return http 204")
+  @DisplayName("Delete planet return http 204")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidDelete() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .delete("/api/v1/planets/4"))
@@ -227,7 +227,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if delete planet return http 200")
+  @DisplayName("Delete planet return http 200")
   void shouldReturnPlanetDeleted() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -237,7 +237,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if planet is deleted in delete planet")
+  @DisplayName("Delete planet return http 204 and delete planet")
   void shouldReturnPlanetDeletedInGetPlanet() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -251,7 +251,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if delete planet probes return http 204")
+  @DisplayName("Delete planet probes return http 204")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidDeleteProbes() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .delete("/api/v1/planets/42/probes"))
@@ -260,7 +260,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if delete planet probes return http 200")
+  @DisplayName("Delete planet probes return http 200")
   void shouldReturnPlanetProbesDeleted() throws Exception {
     planetService.makePlanet("5x5");
     probeService.makeProbe(1L, 1, 1, "Norte");
@@ -271,7 +271,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Test if delete planet probes only delete planet probes")
+  @DisplayName("Delete planet probes only delete planet probes")
   void shouldReturnPlanetProbesDeletedInGetPlanetProbes() throws Exception {
     planetService.makePlanet("5x5");
     probeService.makeProbe(1L, 1, 1, "Norte");

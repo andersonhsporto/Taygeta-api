@@ -336,5 +336,18 @@ public class ProbeControllerTest {
         );
   }
 
+  @Test
+  @DisplayName("Put probe collision")
+  public void shouldReturnCollisionWhenPutProbe() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 1, 2, "Norte");
+    probeService.makeProbe(1L, 1, 3, "North");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .put("/api/v1/probes?probeId=2&movements=M"))
+        .andExpect(status().isConflict())
+        .andExpect(content().string("Collision detected"));
+  }
+
 
 }

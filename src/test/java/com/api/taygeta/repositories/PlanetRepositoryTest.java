@@ -19,7 +19,7 @@ public class PlanetRepositoryTest {
   private PlanetRepository planetRepository;
 
   @Test
-  @DisplayName("Test if planet is saved")
+  @DisplayName("Planet is saved")
   public void itShouldCheckIfPlanetExists() {
     var planet = PlanetEntity.fromString("5x5");
 
@@ -31,7 +31,7 @@ public class PlanetRepositoryTest {
   }
 
   @Test
-  @DisplayName("Tests if findAll returns a list of planets")
+  @DisplayName("findAll returns a list of planets")
   public void itShouldCheckIfFindAllReturnsAListOfPlanets() {
     var planet = PlanetEntity.fromString("5x5");
     var planet2 = PlanetEntity.fromString("5x5");
@@ -46,7 +46,7 @@ public class PlanetRepositoryTest {
   }
 
   @Test
-  @DisplayName("Tests if findById returns a planet")
+  @DisplayName("findById returns a planet")
   public void itShouldCheckIfFindByIdReturnsAPlanet() {
     var planet = PlanetEntity.fromString("6x6");
     planetRepository.save(planet);
@@ -59,7 +59,7 @@ public class PlanetRepositoryTest {
   }
 
   @Test
-  @DisplayName("Tests if deleteById deletes a planet")
+  @DisplayName("deleteById deletes a planet")
   public void itShouldCheckIfDeleteByIdDeletesAPlanet() {
     var planet = PlanetEntity.fromString("7x7");
 
@@ -79,7 +79,7 @@ public class PlanetRepositoryTest {
   }
 
   @Test
-  @DisplayName("Tests if deleteAll deletes all planets")
+  @DisplayName("deleteAll deletes all planets")
   public void itShouldCheckIfDeleteAllDeletesAllPlanets() {
     var planet = PlanetEntity.fromString("8x8");
     var planet2 = PlanetEntity.fromString("8x8");
