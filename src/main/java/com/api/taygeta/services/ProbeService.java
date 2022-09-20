@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ProbeService {
 
   private final ProbeRepository probeRepository;
+
   private final PlanetRepository planetRepository;
 
   private final MovementService movementService;
@@ -45,7 +46,7 @@ public class ProbeService {
       case "south", "sul", "s" -> Cardinal.SOUTH;
       case "east", "leste", "e", "l" -> Cardinal.EAST;
       case "west", "oeste", "w", "o" -> Cardinal.WEST;
-      default -> null;
+      default -> throw new IllegalArgumentException("Invalid cardinal");
     };
   }
 
