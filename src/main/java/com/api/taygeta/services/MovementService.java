@@ -23,7 +23,7 @@ public class MovementService {
   public ResponseEntity<Object> moveProbe(ProbeEntity probe, String movement) {
     try {
       updateProbeData(probe, movement);
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.OK).body("Probe moved successfully");
     } catch (CollisionException e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body("Collision detected");
     }

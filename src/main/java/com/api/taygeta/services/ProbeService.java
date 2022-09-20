@@ -85,10 +85,9 @@ public class ProbeService {
       Optional<PlanetEntity> planet, Point coordinates, String direction) {
 
     if (planet.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
     } else if (existProbeInCoordinates(planet, coordinates)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body("Probe already exists in coordinates");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
     } else if (!isValidCardinal(direction)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
     } else {
