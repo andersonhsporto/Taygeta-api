@@ -292,7 +292,8 @@ public class ProbeControllerTest {
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.jsonPath("$.position.x").value(0),
             MockMvcResultMatchers.jsonPath("$.position.y").value(3),
-            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.NORTH.toString())
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.NORTH.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
         );
   }
 
@@ -312,7 +313,8 @@ public class ProbeControllerTest {
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.jsonPath("$.position.x").value(1),
             MockMvcResultMatchers.jsonPath("$.position.y").value(3),
-            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.NORTH.toString())
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.NORTH.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
         );
   }
 
@@ -332,12 +334,13 @@ public class ProbeControllerTest {
             MockMvcResultMatchers.status().isOk(),
             MockMvcResultMatchers.jsonPath("$.position.x").value(5),
             MockMvcResultMatchers.jsonPath("$.position.y").value(1),
-            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.EAST.toString())
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.EAST.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
         );
   }
 
   @Test
-  @DisplayName("Put probe collision")
+  @DisplayName("Put probe collision detected")
   public void shouldReturnCollisionWhenPutProbe() throws Exception {
     planetService.makePlanet("5x5");
     probeService.makeProbe(1L, 1, 2, "Norte");
@@ -347,6 +350,90 @@ public class ProbeControllerTest {
             .put("/api/v1/probes?probeId=2&movements=M"))
         .andExpect(status().isConflict())
         .andExpect(content().string("Collision detected"));
+  }
+
+  @Test
+  @DisplayName("Put probe round planet on x axis right")
+  public void shouldReturnOkWhenPutProbeRoundPlanetOnXAxis() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 5, 2, "Leste");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .put("/api/v1/probes?probeId=2&movements=M"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Probe moved successfully"));
+
+    mockMvc.perform(get("/api/v1/probes/2"))
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.position.x").value(1),
+            MockMvcResultMatchers.jsonPath("$.position.y").value(2),
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.EAST.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
+        );
+  }
+
+  @Test
+  @DisplayName("Put probe round planet on x axis left")
+  public void shouldReturnOkWhenPutProbeRoundPlanetOnXAxisLeft() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 0, 2, "Oeste");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .put("/api/v1/probes?probeId=2&movements=M"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Probe moved successfully"));
+
+    mockMvc.perform(get("/api/v1/probes/2"))
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.position.x").value(5),
+            MockMvcResultMatchers.jsonPath("$.position.y").value(2),
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.WEST.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
+        );
+  }
+
+  @Test
+  @DisplayName("Put probe round planet on y axis up")
+  public void shouldReturnOkWhenPutProbeRoundPlanetOnYAxisUp() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 3, 5, "Norte");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .put("/api/v1/probes?probeId=2&movements=M"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Probe moved successfully"));
+
+    mockMvc.perform(get("/api/v1/probes/2"))
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.position.x").value(3),
+            MockMvcResultMatchers.jsonPath("$.position.y").value(1),
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.NORTH.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
+        );
+  }
+
+  @Test
+  @DisplayName("Put probe round planet on y axis down")
+  public void shouldReturnOkWhenPutProbeRoundPlanetOnYAxisDown() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 3, 0, "Sul");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .put("/api/v1/probes?probeId=2&movements=M"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Probe moved successfully"));
+
+    mockMvc.perform(get("/api/v1/probes/2"))
+        .andExpectAll(
+            MockMvcResultMatchers.status().isOk(),
+            MockMvcResultMatchers.jsonPath("$.position.x").value(3),
+            MockMvcResultMatchers.jsonPath("$.position.y").value(5),
+            MockMvcResultMatchers.jsonPath("$.cardinal").value(Cardinal.SOUTH.toString()),
+            MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
+        );
   }
 
 
