@@ -260,7 +260,19 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Delete planet probes return http 200")
+  @DisplayName("Delete planet probes return 204 and \"Probes not found\"")
+  void shouldReturnProbesNotFoundIfPlanetIsInvalidDeleteProbes() throws Exception {
+    planetService.makePlanet("5x5");
+
+    mockMvc.perform(MockMvcRequestBuilders
+            .delete("/api/v1/planets/1/probes"))
+        .andExpect(status().isNoContent())
+        .andExpect(content().string("Probes not found"));
+  }
+
+
+  @Test
+  @DisplayName("Delete planet probes return 204")
   void shouldReturnPlanetProbesDeleted() throws Exception {
     planetService.makePlanet("5x5");
     probeService.makeProbe(1L, 1, 1, "Norte");
