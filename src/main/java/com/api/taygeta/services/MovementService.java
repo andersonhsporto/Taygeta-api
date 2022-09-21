@@ -20,12 +20,12 @@ public class MovementService {
     this.probeRepository = probeRepository;
   }
 
-  public ResponseEntity<Object> moveProbe(ProbeEntity probe, String movement) {
+  public ResponseEntity<Object> movePersistProbe(ProbeEntity probe, String movement) {
     try {
       updateProbeData(probe, movement);
-      return ResponseEntity.ok().build();
+      return ResponseEntity.status(HttpStatus.OK).body("Probe moved successfully");
     } catch (CollisionException e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body("Collision detected");
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Collision detected the probe will not move");
     }
   }
 

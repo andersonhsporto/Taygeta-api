@@ -4,7 +4,6 @@ import com.api.taygeta.dto.ProbeDTO;
 import com.api.taygeta.entities.PlanetEntity;
 import com.api.taygeta.entities.ProbeEntity;
 import com.api.taygeta.enums.Cardinal;
-import com.api.taygeta.exceptions.InvalidCardinalException;
 import com.api.taygeta.repositories.PlanetRepository;
 import com.api.taygeta.repositories.ProbeRepository;
 import java.awt.Point;
@@ -19,10 +18,10 @@ import org.springframework.stereotype.Service;
 public class ProbeService {
 
   private final ProbeRepository probeRepository;
+
   private final PlanetRepository planetRepository;
 
   private final MovementService movementService;
-
 
   @Autowired
   public ProbeService(
@@ -34,27 +33,11 @@ public class ProbeService {
     this.movementService = movementService;
   }
 
-  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
-    return probes.stream().map(ProbeDTO::fromEntity).toList();
-  }
-
-  public static Cardinal parseCardinal(String command) throws InvalidCardinalException {
-    String lowerCaseCommand = command.toLowerCase();
-
-    return switch (lowerCaseCommand) {
-      case "north", "norte", "n" -> Cardinal.NORTH;
-      case "south", "sul", "s" -> Cardinal.SOUTH;
-      case "east", "leste", "e", "l" -> Cardinal.EAST;
-      case "west", "oeste", "w", "o" -> Cardinal.WEST;
-      default -> throw new InvalidCardinalException("Invalid Cardinal");
-    };
-  }
-
   public ResponseEntity<Object> getAllProbes() {
     var probes = probeRepository.findAll();
 
     if (probes.isEmpty()) {
-      return new ResponseEntity<>("No probes found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("No probes found", HttpStatus.NO_CONTENT);
     } else {
       return new ResponseEntity<>(convertListEntityToDto(probes), HttpStatus.OK);
     }
@@ -66,7 +49,7 @@ public class ProbeService {
     if (probe.isPresent()) {
       return ResponseEntity.ok(ProbeDTO.fromEntity(probe.get()));
     } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
     }
   }
 
@@ -85,10 +68,9 @@ public class ProbeService {
       Optional<PlanetEntity> planet, Point coordinates, String direction) {
 
     if (planet.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Planet not found");
-    } else if (existProbeInCoordinates(planet, coordinates)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-          .body("Probe already exists in coordinates");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
+    } else if (existProbeInCoordinates(planet.get(), coordinates)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
     } else if (!isValidCardinal(direction)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
     } else {
@@ -107,48 +89,20 @@ public class ProbeService {
     return ResponseEntity.ok("Probe created");
   }
 
-  public boolean isValidParameters(
-      Optional<PlanetEntity> planet, Point coordinates, String direction) {
-
-    if (planet.isEmpty()) {
-      return false;
-    } else if (existProbeInCoordinates(planet, coordinates)) {
-      return false;
-    } else {
-      return isValidCardinal(direction) && isValidCoordinate(planet, coordinates);
-    }
-  }
-
-  public boolean existProbeInCoordinates(Optional<PlanetEntity> planet, Point coordinates) {
-    var probes = planet.get().getProbes();
-
-    return probes.stream().anyMatch(probe -> probe.getPosition().equals(coordinates));
-  }
-
-  public boolean isValidCoordinate(Optional<PlanetEntity> planet, Point coordinates) {
-    var planetWidth = planet.get().getWidth();
-    var planetHeight = planet.get().getHeight();
-
-    return coordinates.x >= 0 &&
-        coordinates.x < planetWidth &&
-        coordinates.y >= 0 &&
-        coordinates.y < planetHeight;
-  }
-
   public ResponseEntity<Object> moveProbe(Long id, String movements) {
     var probe = probeRepository.findById(id);
 
     if (probe.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
     } else if (!isValidMovements(movements)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid movements sequence");
     } else {
-      return movementService.moveProbe(probe.get(), movements);
+      return movementService.movePersistProbe(probe.get(), movements);
     }
   }
 
-  public boolean isValidMovements(String movementsSequence) {
-    return movementsSequence.matches("^[MLR]+$");
+  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
+    return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
   public boolean isValidCardinal(String command) {
@@ -159,5 +113,49 @@ public class ProbeService {
       case "n", "s", "e", "l", "w", "o" -> true;
       default -> false;
     };
+  }
+
+  public Cardinal parseCardinal(String command) {
+    String lowerCaseCommand = command.toLowerCase();
+
+    return switch (lowerCaseCommand) {
+      case "north", "norte", "n" -> Cardinal.NORTH;
+      case "south", "sul", "s" -> Cardinal.SOUTH;
+      case "east", "leste", "e", "l" -> Cardinal.EAST;
+      case "west", "oeste", "w", "o" -> Cardinal.WEST;
+      default -> throw new IllegalArgumentException("Invalid cardinal");
+    };
+  }
+
+  public boolean isValidMovements(String movementsSequence) {
+    return movementsSequence.matches("^[MLR]+$");
+  }
+
+  public boolean existProbeInCoordinates(PlanetEntity planet, Point coordinates) {
+    var probes = planet.getProbes();
+
+    return probes.stream().anyMatch(probe -> probe.getPosition().equals(coordinates));
+  }
+
+  public boolean isValidCoordinate(PlanetEntity planet, Point coordinates) {
+    var planetWidth = planet.getWidth();
+    var planetHeight = planet.getHeight();
+
+    return coordinates.x >= 0 &&
+        coordinates.x <= planetWidth &&
+        coordinates.y >= 0 &&
+        coordinates.y <= planetHeight;
+  }
+
+  public boolean isValidParameters(
+      Optional<PlanetEntity> planet, Point coordinates, String direction) {
+
+    if (planet.isEmpty()) {
+      return false;
+    } else if (existProbeInCoordinates(planet.get(), coordinates)) {
+      return false;
+    } else {
+      return isValidCardinal(direction) && isValidCoordinate(planet.get(), coordinates);
+    }
   }
 }
