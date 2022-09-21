@@ -4,14 +4,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>taygeta</artifactId>
   <build>
-    <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
         </plugin>
       </plugins>
-    </pluginManagement>
   </build>
   <dependencies>
     <dependency>
@@ -73,15 +71,18 @@
   <groupId>com.api</groupId>
   <modelVersion>4.0.0</modelVersion>
   <name>taygeta</name>
+  <packaging>jar</packaging>
+  <properties>
+    <java.version>18</java.version>
+    <jdk.version>18</jdk.version>
+    <spring-boot.version>2.7.3</spring-boot.version>
+  </properties>
   <parent>
     <artifactId>spring-boot-starter-parent</artifactId>
     <groupId>org.springframework.boot</groupId>
     <relativePath/>
     <version>2.7.3</version>
   </parent>
-  <properties>
-    <java.version>18</java.version>
-  </properties>
 
   <version>1-SNAPSHOT</version>
 
