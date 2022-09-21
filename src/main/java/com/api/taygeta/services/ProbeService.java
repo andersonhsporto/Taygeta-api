@@ -23,7 +23,6 @@ public class ProbeService {
 
   private final MovementService movementService;
 
-
   @Autowired
   public ProbeService(
       ProbeRepository probeRepository,
@@ -32,22 +31,6 @@ public class ProbeService {
     this.probeRepository = probeRepository;
     this.planetRepository = planetRepository;
     this.movementService = movementService;
-  }
-
-  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
-    return probes.stream().map(ProbeDTO::fromEntity).toList();
-  }
-
-  public static Cardinal parseCardinal(String command) {
-    String lowerCaseCommand = command.toLowerCase();
-
-    return switch (lowerCaseCommand) {
-      case "north", "norte", "n" -> Cardinal.NORTH;
-      case "south", "sul", "s" -> Cardinal.SOUTH;
-      case "east", "leste", "e", "l" -> Cardinal.EAST;
-      case "west", "oeste", "w", "o" -> Cardinal.WEST;
-      default -> throw new IllegalArgumentException("Invalid cardinal");
-    };
   }
 
   public ResponseEntity<Object> getAllProbes() {
@@ -86,7 +69,7 @@ public class ProbeService {
 
     if (planet.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
-    } else if (existProbeInCoordinates(planet, coordinates)) {
+    } else if (existProbeInCoordinates(planet.get(), coordinates)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
     } else if (!isValidCardinal(direction)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
@@ -106,34 +89,6 @@ public class ProbeService {
     return ResponseEntity.ok("Probe created");
   }
 
-  public boolean isValidParameters(
-      Optional<PlanetEntity> planet, Point coordinates, String direction) {
-
-    if (planet.isEmpty()) {
-      return false;
-    } else if (existProbeInCoordinates(planet, coordinates)) {
-      return false;
-    } else {
-      return isValidCardinal(direction) && isValidCoordinate(planet, coordinates);
-    }
-  }
-
-  public boolean existProbeInCoordinates(Optional<PlanetEntity> planet, Point coordinates) {
-    var probes = planet.get().getProbes();
-
-    return probes.stream().anyMatch(probe -> probe.getPosition().equals(coordinates));
-  }
-
-  public boolean isValidCoordinate(Optional<PlanetEntity> planet, Point coordinates) {
-    var planetWidth = planet.get().getWidth();
-    var planetHeight = planet.get().getHeight();
-
-    return coordinates.x >= 0 &&
-        coordinates.x < planetWidth &&
-        coordinates.y >= 0 &&
-        coordinates.y < planetHeight;
-  }
-
   public ResponseEntity<Object> moveProbe(Long id, String movements) {
     var probe = probeRepository.findById(id);
 
@@ -142,12 +97,12 @@ public class ProbeService {
     } else if (!isValidMovements(movements)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid movements sequence");
     } else {
-      return movementService.moveProbe(probe.get(), movements);
+      return movementService.movePersistProbe(probe.get(), movements);
     }
   }
 
-  public boolean isValidMovements(String movementsSequence) {
-    return movementsSequence.matches("^[MLR]+$");
+  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
+    return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
   public boolean isValidCardinal(String command) {
@@ -158,5 +113,49 @@ public class ProbeService {
       case "n", "s", "e", "l", "w", "o" -> true;
       default -> false;
     };
+  }
+
+  public Cardinal parseCardinal(String command) {
+    String lowerCaseCommand = command.toLowerCase();
+
+    return switch (lowerCaseCommand) {
+      case "north", "norte", "n" -> Cardinal.NORTH;
+      case "south", "sul", "s" -> Cardinal.SOUTH;
+      case "east", "leste", "e", "l" -> Cardinal.EAST;
+      case "west", "oeste", "w", "o" -> Cardinal.WEST;
+      default -> throw new IllegalArgumentException("Invalid cardinal");
+    };
+  }
+
+  public boolean isValidMovements(String movementsSequence) {
+    return movementsSequence.matches("^[MLR]+$");
+  }
+
+  public boolean existProbeInCoordinates(PlanetEntity planet, Point coordinates) {
+    var probes = planet.getProbes();
+
+    return probes.stream().anyMatch(probe -> probe.getPosition().equals(coordinates));
+  }
+
+  public boolean isValidCoordinate(PlanetEntity planet, Point coordinates) {
+    var planetWidth = planet.getWidth();
+    var planetHeight = planet.getHeight();
+
+    return coordinates.x >= 0 &&
+        coordinates.x <= planetWidth &&
+        coordinates.y >= 0 &&
+        coordinates.y <= planetHeight;
+  }
+
+  public boolean isValidParameters(
+      Optional<PlanetEntity> planet, Point coordinates, String direction) {
+
+    if (planet.isEmpty()) {
+      return false;
+    } else if (existProbeInCoordinates(planet.get(), coordinates)) {
+      return false;
+    } else {
+      return isValidCardinal(direction) && isValidCoordinate(planet.get(), coordinates);
+    }
   }
 }

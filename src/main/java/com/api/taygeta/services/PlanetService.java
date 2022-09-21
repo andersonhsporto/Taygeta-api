@@ -31,10 +31,6 @@ public class PlanetService {
     }
   }
 
-  private List<PlanetDTO> convertListEntityToDTO(List<PlanetEntity> planets) {
-    return planets.stream().map(PlanetDTO::fromEntity).toList();
-  }
-
   public ResponseEntity<Object> getPlanetById(Long id) {
     var planet = planetRepository.findById(id);
 
@@ -117,8 +113,12 @@ public class PlanetService {
       planetRepository.save(planet.get());
       return ResponseEntity.ok("Probes deleted");
     } else {
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No probes found");
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probes not found");
     }
+  }
+
+  private List<PlanetDTO> convertListEntityToDTO(List<PlanetEntity> planets) {
+    return planets.stream().map(PlanetDTO::fromEntity).toList();
   }
 
   public boolean commandInPlanetSizeFormat(String command) {
