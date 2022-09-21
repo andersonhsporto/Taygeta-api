@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@SpringBootTest(properties="spring.main.banner-mode=off")
 @Transactional
 @AutoConfigureDataJpa
 @AutoConfigureTestDatabase
@@ -349,7 +349,7 @@ public class ProbeControllerTest {
     mockMvc.perform(MockMvcRequestBuilders
             .put("/api/v1/probes?probeId=2&movements=M"))
         .andExpect(status().isConflict())
-        .andExpect(content().string("Collision detected"));
+        .andExpect(content().string("Collision detected the probe will not move"));
   }
 
   @Test
