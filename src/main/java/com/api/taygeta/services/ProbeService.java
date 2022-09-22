@@ -37,7 +37,7 @@ public class ProbeService {
     var probes = probeRepository.findAll();
 
     if (probes.isEmpty()) {
-      return new ResponseEntity<>("No probes found", HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>("Probes not found", HttpStatus.CONFLICT);
     } else {
       return new ResponseEntity<>(convertListEntityToDto(probes), HttpStatus.OK);
     }
@@ -49,7 +49,7 @@ public class ProbeService {
     if (probe.isPresent()) {
       return ResponseEntity.ok(ProbeDTO.fromEntity(probe.get()));
     } else {
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Probe not found");
     }
   }
 
@@ -68,9 +68,9 @@ public class ProbeService {
       Optional<PlanetEntity> planet, Point coordinates, String direction) {
 
     if (planet.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Planet not found");
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Planet not found");
     } else if (existProbeInCoordinates(planet.get(), coordinates)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probe already exists in coordinates");
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Probe already exists in coordinates");
     } else if (!isValidCardinal(direction)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid cardinal");
     } else {
@@ -93,11 +93,22 @@ public class ProbeService {
     var probe = probeRepository.findById(id);
 
     if (probe.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Probe not found");
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Probe not found");
     } else if (!isValidMovements(movements)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid movements sequence");
     } else {
       return movementService.movePersistProbe(probe.get(), movements);
+    }
+  }
+
+  public ResponseEntity<Object> deleteProbe(Long id) {
+    var probe = probeRepository.findById(id);
+
+    if (probe.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Probe not found");
+    } else {
+      probeRepository.delete(probe.get());
+      return ResponseEntity.ok("Probe deleted");
     }
   }
 
