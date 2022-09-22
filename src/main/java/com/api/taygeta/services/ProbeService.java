@@ -33,6 +33,10 @@ public class ProbeService {
     this.movementService = movementService;
   }
 
+  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
+    return probes.stream().map(ProbeDTO::fromEntity).toList();
+  }
+
   public ResponseEntity<Object> getAllProbes() {
     var probes = probeRepository.findAll();
 
@@ -110,10 +114,6 @@ public class ProbeService {
       probeRepository.delete(probe.get());
       return ResponseEntity.ok("Probe deleted");
     }
-  }
-
-  public static List<ProbeDTO> convertListEntityToDto(List<ProbeEntity> probes) {
-    return probes.stream().map(ProbeDTO::fromEntity).toList();
   }
 
   public boolean isValidCardinal(String command) {

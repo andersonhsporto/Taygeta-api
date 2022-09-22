@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TaygetaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TaygetaApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TaygetaApplication.class, args);
+  }
 
 }

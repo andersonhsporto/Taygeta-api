@@ -25,7 +25,8 @@ public class MovementService {
       updateProbeData(probe, movement);
       return ResponseEntity.status(HttpStatus.OK).body("Probe moved successfully");
     } catch (CollisionException e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body("Collision detected the probe will not move");
+      return ResponseEntity.status(HttpStatus.CONFLICT)
+          .body("Collision detected the probe will not move");
     }
   }
 

@@ -33,18 +33,18 @@ public class PlanetController {
   @ApiOperation(value = "Return a list of all planets")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "List of all planets",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = PlanetDTO.class))
-            }),
-        @ApiResponse(
-            responseCode = "409",
-            description = "No planets found",
-            content = @Content)
+          @ApiResponse(
+              responseCode = "200",
+              description = "List of all planets",
+              content = {
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(implementation = PlanetDTO.class))
+              }),
+          @ApiResponse(
+              responseCode = "409",
+              description = "No planets found",
+              content = @Content)
       })
   @GetMapping
   public ResponseEntity<?> getAllPlanets() {
@@ -54,18 +54,18 @@ public class PlanetController {
   @ApiOperation(value = "Return a planet by id")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Planet found",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = PlanetDTO.class))
-            }),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Planet not found",
-            content = @Content)
+          @ApiResponse(
+              responseCode = "200",
+              description = "Planet found",
+              content = {
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(implementation = PlanetDTO.class))
+              }),
+          @ApiResponse(
+              responseCode = "404",
+              description = "Planet not found",
+              content = @Content)
       })
   @GetMapping("/{planetId}")
   public ResponseEntity<?> getPlanetById(
@@ -79,16 +79,16 @@ public class PlanetController {
   @ApiOperation(value = "Return all probes by planet id")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Probes found",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = PlanetDTO.class))
-            }),
-        @ApiResponse(responseCode = "409", description = "No probes found", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
+          @ApiResponse(
+              responseCode = "200",
+              description = "Probes found",
+              content = {
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(implementation = PlanetDTO.class))
+              }),
+          @ApiResponse(responseCode = "409", description = "No probes found", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
       })
   @GetMapping("/{planetId}/probes")
   public ResponseEntity<?> getPlanetProbesById(
@@ -102,8 +102,8 @@ public class PlanetController {
   @ApiOperation(value = "Add a new planet using area string")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Planet created", content = @Content(mediaType = "string")),
-        @ApiResponse(responseCode = "400", description = "Invalid planet size", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Planet created", content = @Content(mediaType = "string")),
+          @ApiResponse(responseCode = "400", description = "Invalid planet size", content = @Content)
       })
   @PostMapping
   public ResponseEntity<?> makePlanet(
@@ -116,9 +116,9 @@ public class PlanetController {
   @ApiOperation(value = "Update a planet by planet id and area string")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Planet updated", content = @Content),
-        @ApiResponse(responseCode = "400", description = "Invalid planet size", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Planet updated", content = @Content),
+          @ApiResponse(responseCode = "400", description = "Invalid planet size", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
       })
   @PutMapping
   public ResponseEntity<?> updatePlanet(
@@ -133,8 +133,8 @@ public class PlanetController {
   @ApiOperation(value = "Delete a planet by planet id")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Planet deleted", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Planet deleted", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content)
       })
   @DeleteMapping("/{planetId}")
   public ResponseEntity<?> deletePlanet(
@@ -147,9 +147,9 @@ public class PlanetController {
   @ApiOperation(value = "Delete probes of a planet by planet id")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Probes deleted", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Probes not found", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Probes deleted", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Planet not found", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Probes not found", content = @Content)
       })
   @DeleteMapping("/{planetId}/probes")
   public ResponseEntity<?> deletePlanetProbes(

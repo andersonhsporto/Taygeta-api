@@ -33,15 +33,15 @@ public class ProbeController {
   @ApiOperation(value = "Return a list of all probes")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "List of all probes",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = ProbeDTO.class))
-            }),
-        @ApiResponse(responseCode = "409", description = "Probes not found", content = @Content)
+          @ApiResponse(
+              responseCode = "200",
+              description = "List of all probes",
+              content = {
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(implementation = ProbeDTO.class))
+              }),
+          @ApiResponse(responseCode = "409", description = "Probes not found", content = @Content)
       })
   @GetMapping
   public ResponseEntity<Object> getAllProbes() {
@@ -51,19 +51,19 @@ public class ProbeController {
   @ApiOperation(value = "Return a probe by id")
   @ApiResponses(
       value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Probe found",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = ProbeDTO.class))
-            }),
-        @ApiResponse(responseCode = "409", description = "Probe not found", content = @Content)
+          @ApiResponse(
+              responseCode = "200",
+              description = "Probe found",
+              content = {
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(implementation = ProbeDTO.class))
+              }),
+          @ApiResponse(responseCode = "409", description = "Probe not found", content = @Content)
       })
   @GetMapping("/{probeId}")
   public ResponseEntity<Object> getByProbeId(
-      @ApiParam(value="Probe Id number.", required = true, allowableValues = "range[1, infinity]")
+      @ApiParam(value = "Probe Id number.", required = true, allowableValues = "range[1, infinity]")
       @PathVariable Long probeId) {
 
     return probeService.getProbeById(probeId);
@@ -73,19 +73,19 @@ public class ProbeController {
   @ApiOperation(value = "Add a new probe")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Probe created", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Not found error", content = @Content),
-        @ApiResponse(responseCode = "400", description = "Invalid parameter error", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Probe created", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Not found error", content = @Content),
+          @ApiResponse(responseCode = "400", description = "Invalid parameter error", content = @Content)
       })
   @PostMapping
   public ResponseEntity<Object> makeProbe(
-      @ApiParam(value="Planet Id number.", required = true, allowableValues = "range[1, infinity]")
+      @ApiParam(value = "Planet Id number.", required = true, allowableValues = "range[1, infinity]")
       @RequestParam Long planetId,
-      @ApiParam(value="Probe X coordinate.", required = true, allowableValues = "range[0, infinity]")
+      @ApiParam(value = "Probe X coordinate.", required = true, allowableValues = "range[0, infinity]")
       @RequestParam Integer x,
-      @ApiParam(value="Probe Y coordinate.", required = true, allowableValues = "range[0, infinity]")
+      @ApiParam(value = "Probe Y coordinate.", required = true, allowableValues = "range[0, infinity]")
       @RequestParam Integer y,
-      @ApiParam(value="Probe cardinal (NORTH, SOUTH, EAST, WEST).", required = true)
+      @ApiParam(value = "Probe cardinal (NORTH, SOUTH, EAST, WEST).", required = true)
       @RequestParam String direction) {
 
     return probeService.makeProbe(planetId, x, y, direction);
@@ -94,15 +94,15 @@ public class ProbeController {
   @ApiOperation(value = "Move a probe")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Probe moved successfully", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Probe not found / Collision Error", content = @Content),
-        @ApiResponse(responseCode = "400", description = "Invalid movements sequence", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Probe moved successfully", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Probe not found / Collision Error", content = @Content),
+          @ApiResponse(responseCode = "400", description = "Invalid movements sequence", content = @Content)
       })
   @PutMapping
   public ResponseEntity<?> moveProbe(
-      @ApiParam(value="Probe Id number.", required = true, allowableValues = "range[1, infinity]")
+      @ApiParam(value = "Probe Id number.", required = true, allowableValues = "range[1, infinity]")
       @RequestParam Long probeId,
-      @ApiParam(value="Movement command string using L, R, M characters.", required = true)
+      @ApiParam(value = "Movement command string using L, R, M characters.", required = true)
       @RequestParam String movements) {
 
     return probeService.moveProbe(probeId, movements);
@@ -111,12 +111,12 @@ public class ProbeController {
   @ApiOperation(value = "Delete a probe by id")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Probe deleted", content = @Content),
-        @ApiResponse(responseCode = "409", description = "Probe not found", content = @Content)
+          @ApiResponse(responseCode = "200", description = "Probe deleted", content = @Content),
+          @ApiResponse(responseCode = "409", description = "Probe not found", content = @Content)
       })
   @DeleteMapping("/{probeId}")
   public ResponseEntity<Object> deleteProbe(
-      @ApiParam(value="Probe Id number.", required = true, allowableValues = "range[1, infinity]")
+      @ApiParam(value = "Probe Id number.", required = true, allowableValues = "range[1, infinity]")
       @PathVariable Long probeId) {
 
     return probeService.deleteProbe(probeId);

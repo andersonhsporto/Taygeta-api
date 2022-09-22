@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(properties="spring.main.banner-mode=off")
+@SpringBootTest(properties = "spring.main.banner-mode=off")
 @Transactional
 @AutoConfigureDataJpa
 @AutoConfigureTestDatabase
@@ -457,7 +457,6 @@ public class ProbeControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().string("Probe deleted"));
   }
-
 
 
 }
