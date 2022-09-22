@@ -38,10 +38,10 @@ class PlanetControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  @DisplayName("Get all planets return http status 204")
+  @DisplayName("Get all planets return http status 409")
   void shouldReturnNoPlanetFoundIfThereIsNoPlanet() throws Exception {
     mockMvc.perform(get("/api/v1/planets"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("No planets found"));
   }
 
@@ -72,10 +72,10 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Get planet by id return http 204")
+  @DisplayName("Get planet by id return http 409")
   void shouldReturnPlanetNotFoundIfThereIsNoPlanets() throws Exception {
     mockMvc.perform(get("/api/v1/planets/1"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
@@ -106,21 +106,21 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Get planet probes return http 204")
+  @DisplayName("Get planet probes return http 409")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalid() throws Exception {
     mockMvc.perform(get("/api/v1/planets/1/probes"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
   @Test
-  @DisplayName("Get planet probes return http 204")
+  @DisplayName("Get planet probes return http 409")
   void shouldReturnPlanetProbesNotFoundIfProbeAreMissing() throws Exception {
     planetService.makePlanet("5x5");
 
     mockMvc.perform(get("/api/v1/planets/1/probes"))
-        .andExpect(status().isNoContent())
-        .andExpect(content().string("No probes found"));
+        .andExpect(status().isConflict())
+        .andExpect(content().string("Probes not found"));
   }
 
   @Test
@@ -189,11 +189,11 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Put planet return http 204")
+  @DisplayName("Put planet return http 409")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidPut() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .put("/api/v1/planets?id=4&area=4x5"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
@@ -218,11 +218,11 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Delete planet return http 204")
+  @DisplayName("Delete planet return http 409")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidDelete() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .delete("/api/v1/planets/4"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
@@ -237,7 +237,7 @@ class PlanetControllerTest {
   }
 
   @Test
-  @DisplayName("Delete planet return http 204 and delete planet")
+  @DisplayName("Delete planet return http 409 and delete planet")
   void shouldReturnPlanetDeletedInGetPlanet() throws Exception {
     planetService.makePlanet("5x5");
 
@@ -246,27 +246,27 @@ class PlanetControllerTest {
         .andExpect(status().isOk());
 
     mockMvc.perform(get("/api/v1/planets/1"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
   @Test
-  @DisplayName("Delete planet probes return http 204")
+  @DisplayName("Delete planet probes return http 409")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidDeleteProbes() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .delete("/api/v1/planets/42/probes"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
 
   @Test
-  @DisplayName("Delete planet probes return 204 and \"Probes not found\"")
+  @DisplayName("Delete planet probes return 409 and \"Probes not found\"")
   void shouldReturnProbesNotFoundIfPlanetIsInvalidDeleteProbes() throws Exception {
     planetService.makePlanet("5x5");
 
     mockMvc.perform(MockMvcRequestBuilders
             .delete("/api/v1/planets/1/probes"))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isConflict())
         .andExpect(content().string("Probes not found"));
   }
 
@@ -293,7 +293,7 @@ class PlanetControllerTest {
         .andExpect(status().isOk());
 
     mockMvc.perform(get("/api/v1/planets/1/probes"))
-        .andExpect(status().isNoContent())
-        .andExpect(content().string("No probes found"));
+        .andExpect(status().isConflict())
+        .andExpect(content().string("Probes not found"));
   }
 }

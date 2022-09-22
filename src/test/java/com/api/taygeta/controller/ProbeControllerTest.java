@@ -1,5 +1,6 @@
 package com.api.taygeta.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,10 +40,10 @@ public class ProbeControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  @DisplayName("Get all probes return http status 204")
+  @DisplayName("Get all probes return http status 409")
   public void shouldReturnNoProbesFound() throws Exception {
     mockMvc.perform(get("/api/v1/probes"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isConflict());
   }
 
   @Test
@@ -64,10 +65,10 @@ public class ProbeControllerTest {
   }
 
   @Test
-  @DisplayName("Get probe by id return http status 204")
+  @DisplayName("Get probe by id return http status 409")
   public void shouldReturnNoProbeFound() throws Exception {
     mockMvc.perform(get("/api/v1/probes/1"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isConflict());
   }
 
   @Test
@@ -96,11 +97,11 @@ public class ProbeControllerTest {
   }
 
   @Test
-  @DisplayName("Post probe return http status 204 when there is no planet")
+  @DisplayName("Post probe return http status 409 when there is no planet")
   public void shouldReturnNotFoundWhenPostProbe() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
             .post("/api/v1/probes?planetId=40&x=0&y=2&direction=NORTH"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isConflict());
   }
 
   @Test
@@ -112,14 +113,14 @@ public class ProbeControllerTest {
   }
 
   @Test
-  @DisplayName("Post probe return http status 404 when direction is invalid")
+  @DisplayName("Post probe return http status 409 when already exists a probe in the same position")
   public void shouldReturnBadRequestWhenPostProbe() throws Exception {
     planetService.makePlanet("42x42");
     probeService.makeProbe(1L, 0, 2, "LESTE");
 
     mockMvc.perform(MockMvcRequestBuilders
             .post("/api/v1/probes?planetId=1&x=0&y=2&direction=NORTH"))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isConflict());
   }
 
   @Test
@@ -187,13 +188,13 @@ public class ProbeControllerTest {
   }
 
   @Test
-  @DisplayName("Put probe return http status 204 when there is no probe")
+  @DisplayName("Put probe return http status 409 when there is no probe")
   public void shouldReturnNotFoundWhenNotFoundProbe() throws Exception {
     planetService.makePlanet("42x42");
 
     mockMvc.perform(MockMvcRequestBuilders
             .put("/api/v1/probes?probeId=43&movements=L"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isConflict());
   }
 
   @Test
@@ -435,6 +436,28 @@ public class ProbeControllerTest {
             MockMvcResultMatchers.jsonPath("$.PlanetId").value(1)
         );
   }
+
+  @Test
+  @DisplayName("Delete probe not found")
+  public void shouldReturnNotFoundWhenDeleteProbe() throws Exception {
+    planetService.makePlanet("5x5");
+
+    mockMvc.perform(delete("/api/v1/probes/2"))
+        .andExpect(status().isConflict())
+        .andExpect(content().string("Probe not found"));
+  }
+
+  @Test
+  @DisplayName("Delete probe success")
+  public void shouldReturnOkWhenDeleteProbe() throws Exception {
+    planetService.makePlanet("5x5");
+    probeService.makeProbe(1L, 3, 0, "Sul");
+
+    mockMvc.perform(delete("/api/v1/probes/2"))
+        .andExpect(status().isOk())
+        .andExpect(content().string("Probe deleted"));
+  }
+
 
 
 }
