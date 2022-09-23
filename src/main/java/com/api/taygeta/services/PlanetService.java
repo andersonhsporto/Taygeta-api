@@ -25,7 +25,7 @@ public class PlanetService {
     var planets = planetRepository.findAll();
 
     if (planets.isEmpty()) {
-      return new ResponseEntity<>("No planets found", HttpStatus.CONFLICT);
+      return new ResponseEntity<>("Planets not found", HttpStatus.CONFLICT);
     } else {
       return new ResponseEntity<>(convertListEntityToDTO(planets), HttpStatus.OK);
     }

@@ -42,7 +42,7 @@ class PlanetControllerTest {
   void shouldReturnNoPlanetFoundIfThereIsNoPlanet() throws Exception {
     mockMvc.perform(get("/api/v1/planets"))
         .andExpect(status().isConflict())
-        .andExpect(content().string("No planets found"));
+        .andExpect(content().string("Planets not found"));
   }
 
   @Test

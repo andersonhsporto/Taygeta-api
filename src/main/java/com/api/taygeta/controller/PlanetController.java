@@ -43,7 +43,7 @@ public class PlanetController {
               }),
           @ApiResponse(
               responseCode = "409",
-              description = "No planets found",
+              description = "Planets not found",
               content = @Content)
       })
   @GetMapping
