@@ -45,7 +45,7 @@ Para iniciar a api execute o seguinte comando:
   docker-compose up
 ```
 
-Este comando irá iniciar um container com a api na porta 8080 e um container com o banco de dados que irá utilizar a porta 5432.
+Este comando irá iniciar um container com a api na porta 8080 e um container com o banco de dados utilizando a porta 5432.
 
 
 
