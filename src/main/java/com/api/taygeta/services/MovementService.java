@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MovementService {
 
-  ProbeRepository probeRepository;
+  private final ProbeRepository probeRepository;
 
   @Autowired
   public MovementService(ProbeRepository probeRepository) {
