@@ -24,10 +24,10 @@ Requisições para a API devem seguir os padrões:
 | `GET`              | `/api/v1/planets`| Retorna uma lista ( JSON ) com os dados de todos os planetas cadastrados |
 | `POST`             | `/api/v1/planets`| Adiciona um novo planeta utilizando uma string para representar a area deste  |
 | `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados </br>e uma string para representar a area deste |
-| `GET`             | `/api/v1/planets{planetId}` | Retorna os dados ( JSON ) de um planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets{planetId}` | Deleta um planeta e suas respectivas sondas utilizando </br>o id deste no banco de dados |
-| `GET`             | `/api/v1/planets{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas </br>de um respectivo planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets{planetId}/probes` | Deleta todas as sondas de um respectivo planeta </br>utilizando o id deste no banco de dados |
+| `GET`             | `/api/v1/planets/{planetId}` | Retorna os dados ( JSON ) de um planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets/{planetId}` | Deleta um planeta e suas respectivas sondas utilizando </br>o id deste no banco de dados |
+| `GET`             | `/api/v1/planets/{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas </br>de um respectivo planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets/{planetId}/probes` | Deleta todas as sondas de um respectivo planeta </br>utilizando o id deste no banco de dados |
 | `GET`             | `/api/v1/probes` | Retorna uma lista ( JSON ) com todas as sondas cadastradas no banco de dados |
 | `POST`            | `/api/v1/probes` | Adiciona uma nova sonda ao banco de dados utilizando, </br>id do planeta, ponto cardinal, posição x e y |
 | `PUT`             | `/api/v1/probes` | Movimenta uma sonda utilizando o id desta no banco de dados </br>e uma sequência de movimentos  |
