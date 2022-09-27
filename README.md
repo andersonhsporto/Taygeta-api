@@ -19,15 +19,23 @@ que implementa uma variação do desafio [Mars Rover](https://code.google.com/ar
 
 ## Métodos
 Requisições para a API devem seguir os padrões:
-| Método             | Rota         | Descrição                                                                                    |
-|:---: |:---: |:---: |
+| Método  | Rota | Descrição |
+|:---:    |:---: |:---:      |
 | `GET`              | `/api/v1/planets`| Retorna uma lista ( JSON ) com os dados de todos os planetas cadastrados |
 | `POST`             | `/api/v1/planets`| Adiciona um novo planeta utilizando uma string para representar a area deste  |
-| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados e uma string para representar a area deste |
-| `GET`             | `/api/v1/planets{planetId}` | Retorna os dados ( JSON ) de uma planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets{planetId}` | Deleta um planeta e suas respectivas sondas utilizando o id deste no banco de dados |
-| `GET`             | `/api/v1/planets{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas de um respectivo planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets{planetId}/probes` | Deleta todas as sondas de respectivo planeta utilizando o id deste no banco de dados |
+| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados </br>e uma string para representar a area deste |
+| `GET`             | `/api/v1/planets{planetId}` | Retorna os dados ( JSON ) de um planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets{planetId}` | Deleta um planeta e suas respectivas sondas utilizando </br>o id deste no banco de dados |
+| `GET`             | `/api/v1/planets{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas </br>de um respectivo planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets{planetId}/probes` | Deleta todas as sondas de um respectivo planeta </br>utilizando o id deste no banco de dados |
+| `GET`             | `/api/v1/probes` | Retorna uma lista ( JSON ) com todas as sondas cadastradas no banco de dados |
+| `POST`            | `/api/v1/probes` | Adiciona uma nova sonda ao banco de dados utilizando, </br>id do planeta, ponto cardinal, posição x e y |
+| `PUT`             | `/api/v1/probes` | Movimenta uma sonda utilizando o id desta no banco de dados </br>e uma sequência de movimentos  |
+| `GET`             | `/api/v1/probes/{probeId}` | Retorna os dados ( JSON ) de uma sonda utilizando o id desta no banco de dados |
+| `DELETE`          | `/api/v1/probes/{probeId}` | Deleta uma sonda utilizando id desta no banco de dados |
+
+A documentação Swagger está disponível na rota: ```/swagger-ui/```: </br>
+  &emsp; Uma demonstração desta documentação está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
 
 
 ## Inicialização
