@@ -62,6 +62,11 @@ public class PlanetEntity {
 
     this.width = Integer.parseInt(sides[0]);
     this.height = Integer.parseInt(sides[1]);
+    deleteProbesOutOfRange();
+  }
+
+  private void deleteProbesOutOfRange() {
+    probes.removeIf(probe -> probe.getPosition().x > width || probe.getPosition().y > height);
   }
 
   public void removeProbes(List<ProbeEntity> probesList) {
