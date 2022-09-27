@@ -21,12 +21,13 @@ que implementa uma variação do desafio [Mars Rover](https://code.google.com/ar
 Requisições para a API devem seguir os padrões:
 | Método             | Rota         | Descrição                                                                                    |
 |:---: |:---: |:---: |
-| `GET`              | `/api/v1/planets`| Retorna um lista ( JSON ) com os dados de todos os planetas cadastrados |
+| `GET`              | `/api/v1/planets`| Retorna uma lista ( JSON ) com os dados de todos os planetas cadastrados |
 | `POST`             | `/api/v1/planets`| Adiciona um novo planeta utilizando uma string para representar a area deste  |
-| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id do planeta no banco de dados e uma string para representar a area deste |
-| `POST`             | `/users`         | creates a user in the DB (object user to be includued in request's body)                       |
-| `PUT`              | `/users/:idplanetsplanets`     | updates an already created user in the DB (object user to be includued in request's body)      |
-| `DELETE`           | `/users/:id`     | deletes a user from the DB (JWT token user ID must be the same as the user you want to delete) |
+| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados e uma string para representar a area deste |
+| `GET`             | `/api/v1/planets{planetId}` | Retorna os dados ( JSON ) de uma planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets{planetId}` | Deleta um planeta e suas respectivas sondas utilizando o id deste no banco de dados |
+| `GET`             | `/api/v1/planets{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas de um respectivo planeta utilizando o id deste no banco de dados  |
+| `DELETE`          | `/api/v1/planets{planetId}/probes` | Deleta todas as sondas de respectivo planeta utilizando o id deste no banco de dados |
 
 
 ## Inicialização
