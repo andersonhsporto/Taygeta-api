@@ -5,7 +5,7 @@ WORKDIR /project
 RUN mvn clean package -DskipTests
 
 
-FROM openjdk:18-jdk-alpine
+FROM eclipse-temurin:18-jdk
 RUN mkdir /app
 COPY --from=build /project/target/taygeta-1-SNAPSHOT.jar /app/taygeta-1-SNAPSHOT.jar
 WORKDIR /app
