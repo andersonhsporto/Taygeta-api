@@ -51,7 +51,10 @@ Este comando irá iniciar um container com a api na porta 8080 e um container co
 
 ## Exemplos:
 
+***
+
 ### *Planetas [ /api/v1/planets ]*
+
 
 #### Consultar todos os planetas cadastrados [ GET ]
 
@@ -110,7 +113,10 @@ Exemplo: `/api/v1/planets/4` irá retornar um json com os dados do planeta.
 
 Exemplo: `/api/v1/planets/4` deleta o planeta id 4 e todas as sondas associadas a este.
 
+***
+
 ### *Sondas [ /api/v1/probes ]*
+
 
 #### Consultar todas as sondas cadastradas [ GET ]
 
@@ -156,6 +162,17 @@ Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id
 | `probeId` | Id da sonda no banco de dados |
 
 Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
+
+
+#### Deletar sonda por id  [ DELETE ]
+
+&emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessario utilizar o parametro route probeId, este parâmetro é um numero inteiro utilizado para identificar a sonda no banco de dados.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `probeId` | Id da sonda no banco de dados |
+
+Exemplo: `/api/v1/probes/1` deleta a sonda id 1 do banco de dados.
 
 
 <p align=left> <b>Minhas Informações de contato 📬</b></p>
