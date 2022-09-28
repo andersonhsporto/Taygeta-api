@@ -1,224 +1,118 @@
-# Taygeta API
+# Taygeta CLI
 <p align="center">
-<img src="https://github.com/andersonhsporto/taygeta-api/blob/master/img/star.jpg" width="300px" alt="Taygeta Star"/><br>
+<img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/star.jpg" width="300px" alt="Taygeta Star"/><br>
 </p>
 
-  &emsp;Taygeta é uma [API REST](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)
-que implementa uma variação do desafio [Mars Rover](https://code.google.com/archive/p/marsrovertechchallenge/), utilizando o framework
-[spring](https://spring.io/projects/spring-boot).
+Taygeta é uma [interface de linha de comando](https://en.wikipedia.org/wiki/Command-line_interface) 
+capaz de criar planetas, sondas e simular a movimentação / colisão destas por meio de comandos.
+
+
+
 
 ## Ferramentas Utilizadas
 
 * [JAVA 18](https://www.java.com/pt-BR/) - Linguagem de programação (JDK 18).
-* [Spring](https://spring.io/projects/spring-boot) - Framework MVC.
 * [Apache Maven 3.8.6](https://maven.apache.org/) - Gerenciador de dependências.
 * [IntelliJ](https://www.jetbrains.com/idea/) - IDE para desenvolvimento.
 * [Docker](https://www.docker.com/) - Serviço de virtualização.
-* [PostgreSQL](https://www.postgresql.org/) - Banco de dados.
 
-
-## Métodos
-Requisições para a API devem seguir os padrões:
-| Método  | Rota | Descrição |
-|:---:    |:---: |:---:      |
-| `GET`              | `/api/v1/planets`| Retorna uma lista ( JSON ) com os dados de todos os planetas cadastrados |
-| `POST`             | `/api/v1/planets`| Adiciona um novo planeta utilizando uma string para representar a area deste  |
-| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados </br>e uma string para representar a área deste |
-| `GET`             | `/api/v1/planets/{planetId}` | Retorna os dados ( JSON ) de um planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets/{planetId}` | Deleta um planeta e suas respectivas sondas utilizando </br>o id deste no banco de dados |
-| `GET`             | `/api/v1/planets/{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas </br>de um respectivo planeta utilizando o id deste no banco de dados  |
-| `DELETE`          | `/api/v1/planets/{planetId}/probes` | Deleta todas as sondas de um respectivo planeta </br>utilizando o id deste no banco de dados |
-| `GET`             | `/api/v1/probes` | Retorna uma lista ( JSON ) com todas as sondas cadastradas no banco de dados |
-| `POST`            | `/api/v1/probes` | Adiciona uma nova sonda ao banco de dados utilizando, </br>id do planeta, ponto cardinal, posição x e y |
-| `PUT`             | `/api/v1/probes` | Movimenta uma sonda utilizando o id desta no banco de dados </br>e uma sequência de movimentos  |
-| `GET`             | `/api/v1/probes/{probeId}` | Retorna os dados ( JSON ) de uma sonda utilizando o id desta no banco de dados |
-| `DELETE`          | `/api/v1/probes/{probeId}` | Deleta uma sonda utilizando id desta no banco de dados |
-
-A documentação ( Swagger ) com os detalhes sobre como utilizar estes métodos está disponível na rota: `/swagger-ui/`: </br>
-  &emsp; Uma demonstração desta está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
- 
 
 ## Inicialização
 
-Para iniciar a api utilize o comando:
+Para executar o projeto é necessário gerar o artefato *.jar*, uma forma de executar essa ação no linux é utilizando o comando:
 
 ```sh
-  docker-compose up
+  mvn package
 ```
 
-Este comando irá iniciar um contêiner com a api na porta `8080` e um contêiner com o banco de dados utilizando a porta `5432`.
-
-Para executar somente os testes utilize o comando:
-
+Este comando irá gerar um *.jar* de nome `Taygeta-cli-1.0-SNAPSHOT.jar`, para executar este artefato basta utilizar o comando:
 
 ```sh
-  mvn test
+  java -jar Taygeta-cli-1.0-SNAPSHOT.jar
 ```
 
-## Exemplos
-<details>
-  <summary>Consultar todos os planetas cadastrados [ GET ]</summary>
- 
-#### *Planetas [ /api/v1/planets ]*
+### Docker
 
-&emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
+Para executar este projeto no docker, basta utilizar o seguinte comando para gerar uma imagem deste projeto:
 
-Exemplo: `/api/v1/planets/` irá retornar um json com os dados de todos os planetas cadastrados.
+```sh
+  docker build -t taygeta --build-arg JAR_FILE=Taygeta-cli-1.0-SNAPSHOT .
+```
 
-#### Adicionar Novo Planeta [ POST ]
+Este comando irá gerar uma imagem com o nome `taygeta`, para visualizar o projeto no contêiner basta utilizar o comando:
 
-  &emsp;Para criar um novo planeta é necessário utilizar o parâmetro query `area` este parâmetro,
-  &emsp; utiliza uma string com o caractere x como delimitador entre altura e largura
-do retângulo utilizado para representar o planeta.
+```sh
+  docker run -it --rm taygeta
+```
 
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `area` | String utilizada para representar a area do planeta |
+### Lista de Comandos
+Comando | Definição
+---|---------
+`add-planet` | Adicionar novo planeta
+`add-probe` | Adicionar sonda a um planeta existente
+`move-probe` | Mover sonda existente
+`list all` ou `list total` | Listar todos os planetas e suas respectivas sondas
+`list planets` ou `list planet` | Listar todos os planetas
+`list probes` ou `list probe` | Listar todas as sondas
+`undo` | Desfazer comando atual
+`help` ou `?` | Exibir lista de comandos
+`exit`|  Encerrar o programa
 
-Exemplo: `/api/v1/planets?area=4x2` irá criar um planeta com quatro unidades de largura e duas unidades de altura.
+### Exemplos:
 
-</details>
+Para adicionar um planeta é necessário utilizar o comando `add-planet` e inserir a altura e largura
+do retângulo que representa a área deste planeta, utilizando o caractere x como delimitador (exemplo: `10x10`). 
 
-<details>
-  <summary> Editar tamanho de um planeta [ PUT ]</summary>
-  
-  #### *Planetas [ /api/v1/planets ]*
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/add-planet.gif" width="500px" alt="add-planet"/><br>
+</p>
 
-  &emsp;Para editar o tamanho de um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro query `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados, além disso, é necessário informar o novo tamanho do planeta utilizando uma string com o caractere x como delimitador entre altura e largura do retângulo utilizado para representar o planeta.
-&emsp;Todas as sondas que estão fora das novas dimensões do planeta serão deletadas.
+Para adicionar uma sonda a um planeta previamente cadastrado é necessário utilizar o comando `add-probe`, este comando irá solicitar o ID do planeta, coordenada x, coordenada y e o [ponto cardeal](https://pt.wikipedia.org/wiki/Ponto_cardeal) em inglês ou português.
 
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `planetId` | Id do planeta no banco de dados |
-| `area` | String utilizada para representar a área do planeta |
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/add-probe.gif" width="500px" alt="add-probe"/><br>
+</p>
 
-Exemplo: `/api/v1/planets?area=5x5&id=1` irá alterar o tamanho do planeta id 1, para cinco unidades de altura e largura.
+Para mover uma sonda previamente cadastrada é necessário usar o comando `move-probe`, este comando irá solicitar o ID do planeta, ID da sonda que será movimentada e a sequência de movimentos:
 
-</details>
-
-<details>
-  <summary> Consultar planeta por id [ GET ]</summary>
-
- #### *Planetas /api/v1/planets/{planetId}*
-
-&emsp;Para consultar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
-
-Exemplo: `/api/v1/planets/1` irá retornar um json com os dados referente ao planeta.
-
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `planetId` | Id do planeta no banco de dados |
-
-Exemplo: `/api/v1/planets/4` irá retornar um json com os dados do planeta.
-
-</details>
-
-<details>
-  <summary> Deletar um planeta por id [ DELETE ]</summary>
- 
- #### *Planetas /api/v1/planets/{planetId}*
-
-&emsp;Para deletar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
-&emsp;Todas as sondas deste planeta são deletadas ao utilizar este método.
-
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `planetId` | Id do planeta no banco de dados |
-
-Exemplo: `/api/v1/planets/4` deleta o planeta id 4 e todas as sondas associadas a este.
-
-</details>
-
-<details>
-  <summary> Consultar todas as sondas cadastradas [ GET ]</summary>
-
-#### *Sondas [ /api/v1/probes ]*
-
-&emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
-
-Exemplo: `/api/v1/probes/` irá retornar um json com os dados de todas as sondas cadastradas.
-
-</details>
-
-<details>
-  <summary> Adicionar nova sonda [ POST ]</summary>
-  
-  #### *Sondas [ /api/v1/probes ]*
-
-  &emsp;Para criar uma nova sonda é necessário utilizar os parâmetros query `direction`, `planetId`, `X` e `Y`. Estes parâmetros representam a posição inicial da sonda no planeta.
-  &emsp;A posição inicial da sonda deve ser um dos quatro pontos cardinais ( Norte, Sul, Leste, Oeste ) em inglês ou português.
-
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `direction` | Ponto cardinal inicial da sonda |
-| `planetId` | Id do planeta no banco de dados |
-| `X` | Coordenada x da sonda |
-| `Y` |  Coordenada y da sonda |
-
-Exemplo: `/api/v1/probes?direction=NORTE&planetId=1&x=4&y=2` irá criar uma nova sonda, no planeta id 1, nas coordenadas x4 y2, apontada para o norte.
-
-</details>
-
-<details>
-  <summary> Mover sonda [ PUT ]</summary>
-  
-  #### *Sondas [ /api/v1/probes ]*
-
-&emsp;Para mover uma sonda é necessário utilizar os parâmetros query `movements` e `probeId`.
-&emsp;O parâmetro movements é uma string onde cada caractere desta representa um movimento da sonda: :
-- `M` -> Mover a sonda uma unidade para frente.
+- `M` -> Mover a sonda uma unidade de área para frente
 - `L` -> Virar a sonda para a esquerda (90 graus)
 - `R` -> Virar a sonda para a direita (90 graus)
 
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `movements` | Sequencia de movimentos da sonda |
-| `probeId` | Id da sonda no banco de dados |
+*Observação: se algum destes movimentos resultar em uma colisão o comando é cancelado.*
 
-Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id 1 para uma nova direção.
-
-</details>
-
-<details>
-  <summary> Consultar sonda por id  [ GET ]</summary>
-  
-  #### *Sondas [ /api/v1/probes/{probeId} ]*
-
-&emsp;Para consultar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
-
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `probeId` | Id da sonda no banco de dados |
-
-Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
-
-</details>
-
-<details>
-  <summary> Deletar sonda por id  [ DELETE ]</summary>
-  
-  #### *Sondas [ /api/v1/probes/{probeId} ]*
-
-&emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
-
-| Parâmetro | Descrição |
-|:---:|:---:|
-| `probeId` | Id da sonda no banco de dados |
-
-Exemplo: `/api/v1/probes/1` deleta a sonda id 1 do banco de dados.
-</details>
-
----
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/move-probe.gif" width="500px" alt="move-probe"/><br>
+</p>
 
 
-<p align=left> <b>Minhas Informações de contato 📬</b></p>
+Os comandos `list` exibem informações sobre as sondas e planetas cadastrados.
+
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/list.gif" width="500px" alt="list-probe"/><br>
+</p>
+
+Utilize o comando `help` ou `?` para exibir uma lista com todos os comandos disponíveis.
+
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/help.gif" width="500px" alt="help"/><br>
+</p>
+
+
+Utilize o comando `undo` para desfazer o comando atual ou caso queira encerrar a aplicação utilize o comando `exit`.
+
+<p align="center">
+ <img src="https://github.com/andersonhsporto/Taygeta-planet-probe/blob/master/img/undo.gif" width="500px" alt="undo"/><br>
+</p>
+
+
+<br>
+<br>
+
+<p align=left> <b>Minhas Informações de contato 📬</b> </p>
 <p align=left>
 <a href="https://github.com/andersonhsporto" target="_blank"><img src="https://img.shields.io/badge/Github-181717?logo=Github&logoColor=white"/></a>  
-<a href="mailto:anderson.higo2@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-EA4335?logo=Gmail&logoColor=white"/></a>
-<a href= "https://www.linkedin.com/in/andersonhsporto/"target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&logoColor=white"/></a>
-
-
-
-
+<a href="mailto:anderson.higo2@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-EA4335?logo=Gmail&logoColor=white"/></a> 
+<a href= "https://www.linkedin.com/in/andersonhsporto/"target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&logoColor=white"/></a> 
 
 

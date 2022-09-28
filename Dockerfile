@@ -7,6 +7,9 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:18-jdk
 RUN mkdir /app
-COPY --from=build /project/target/taygeta-1-SNAPSHOT.jar /app/taygeta-1-SNAPSHOT.jar
+COPY --from=build /project/target/Taygeta-cli-1.0-SNAPSHOT.jar /app/Taygeta-cli-1.0-SNAPSHOT.jar
 WORKDIR /app
-CMD "java" "-jar" "taygeta-1-SNAPSHOT.jar"
+CMD "java" "-jar" "Taygeta-cli-1.0-SNAPSHOT.jar"
+
+	#docker build -t taygeta-cli --build-arg JAR_FILE=Taygeta-cli-1.0-SNAPSHOT .
+	#docker run -it --rm taygeta-cli

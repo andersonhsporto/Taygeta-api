@@ -1,108 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>taygeta</artifactId>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>Taygeta-cli</artifactId>
+
   <build>
     <plugins>
       <plugin>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <groupId>org.springframework.boot</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>TaygetaApplication</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Created-By>Anderson Porto</Created-By>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.1.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.0.0-M7</version>
       </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>postgresql</artifactId>
-      <groupId>org.postgresql</groupId>
-      <scope>runtime</scope>
-      <version>42.5.0</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <groupId>org.springframework.boot</groupId>
+      <artifactId>junit</artifactId>
+      <groupId>junit</groupId>
       <scope>test</scope>
+      <version>4.13.2</version>
     </dependency>
-
-    <dependency>
-      <artifactId>h2</artifactId>
-      <groupId>com.h2database</groupId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-
-    <dependency>
-      <artifactId>jackson-core</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <version>2.13.4</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>jackson-databind</artifactId>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <version>2.13.4</version>
-    </dependency>
-
-    <!-- junit 5 -->
     <dependency>
       <artifactId>junit-jupiter-api</artifactId>
       <groupId>org.junit.jupiter</groupId>
       <scope>test</scope>
+      <version>5.9.0</version>
     </dependency>
-
-    <dependency>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <groupId>org.junit.jupiter</groupId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <artifactId>springfox-boot-starter</artifactId>
-      <groupId>io.springfox</groupId>
-      <version>3.0.0</version>
-    </dependency>
-
-    <dependency>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <groupId>io.springfox</groupId>
-      <version>3.0.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-      <version>2.7.3</version>
-    </dependency>
-
-
   </dependencies>
-  <description>taygeta</description>
-  <groupId>com.api</groupId>
+  <groupId>org.cli</groupId>
+
+
   <modelVersion>4.0.0</modelVersion>
-  <name>taygeta</name>
-  <packaging>jar</packaging>
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath/>
-    <version>2.7.3</version>
-  </parent>
+
   <properties>
+    <maven.compiler.source>18</maven.compiler.source>
+    <maven.compiler.target>18</maven.compiler.target>
     <java.version>18</java.version>
     <jdk.version>18</jdk.version>
-    <spring-boot.version>2.7.3</spring-boot.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <version>1-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
 
 </project>
