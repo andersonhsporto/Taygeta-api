@@ -7,6 +7,10 @@
 que implementa uma variação do desafio [Mars Rover](https://code.google.com/archive/p/marsrovertechchallenge/), utilizando o framework
 [spring](https://spring.io/projects/spring-boot).
 
+</br>
+
+Uma versão em modo [interface de linha de comando](https://en.wikipedia.org/wiki/Command-line_interface) está disponível na branch [0-cli](https://github.com/andersonhsporto/taygeta-api/tree/0-cli).
+
 ## Ferramentas Utilizadas
 
 * [JAVA 18](https://www.java.com/pt-BR/) - Linguagem de programação (JDK 18).
