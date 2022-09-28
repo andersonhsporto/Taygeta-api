@@ -123,11 +123,11 @@ public class PlanetController {
   @PutMapping
   public ResponseEntity<?> updatePlanet(
       @ApiParam(value = "Planet Id number.", required = true, allowableValues = "range[1, infinity]")
-      @RequestParam Long id,
+      @RequestParam Long planetId,
       @ApiParam(value = "String area of planet (example: 10x10).", required = true)
       @RequestParam String area) {
 
-    return planetService.updatePlanet(id, area);
+    return planetService.updatePlanet(planetId, area);
   }
 
   @ApiOperation(value = "Delete a planet by planet id")

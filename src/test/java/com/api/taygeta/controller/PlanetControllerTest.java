@@ -192,7 +192,7 @@ class PlanetControllerTest {
   @DisplayName("Put planet return http 409")
   void shouldReturnPlanetNotFoundIfPlanetIsInvalidPut() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders
-            .put("/api/v1/planets?id=4&area=4x5"))
+            .put("/api/v1/planets?planetId=4&area=4x5"))
         .andExpect(status().isConflict())
         .andExpect(content().string("Planet not found"));
   }
@@ -203,7 +203,7 @@ class PlanetControllerTest {
     planetService.makePlanet("5x5");
 
     mockMvc.perform(MockMvcRequestBuilders
-            .put("/api/v1/planets?id=1&area=4x5"))
+            .put("/api/v1/planets?planetId=1&area=4x5"))
         .andExpect(status().isOk());
   }
 
