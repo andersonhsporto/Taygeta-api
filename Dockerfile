@@ -10,6 +10,3 @@ RUN mkdir /app
 COPY --from=build /project/target/taygeta-1-SNAPSHOT.jar /app/taygeta-1-SNAPSHOT.jar
 WORKDIR /app
 CMD "java" "-jar" "taygeta-1-SNAPSHOT.jar"
-
-	#docker build -t taygeta --build-arg JAR_FILE=taygeta-1-SNAPSHOT .
-	#docker run -it --rm taygeta
