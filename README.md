@@ -3,8 +3,8 @@
 <img src="https://github.com/andersonhsporto/taygeta-api/blob/master/img/star.jpg" width="300px" alt="Taygeta Star"/><br>
 </p>
 
-Taygeta é uma [API REST](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)
-que implementa uma variação do desafio [Mars Rover](https://code.google.com/archive/p/marsrovertechchallenge/), utilizando o framework 
+  &emsp;Taygeta é uma [API REST](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)
+que implementa uma variação do desafio [Mars Rover](https://code.google.com/archive/p/marsrovertechchallenge/), utilizando o framework
 [spring](https://spring.io/projects/spring-boot).
 
 ## Ferramentas Utilizadas
@@ -23,7 +23,7 @@ Requisições para a API devem seguir os padrões:
 |:---:    |:---: |:---:      |
 | `GET`              | `/api/v1/planets`| Retorna uma lista ( JSON ) com os dados de todos os planetas cadastrados |
 | `POST`             | `/api/v1/planets`| Adiciona um novo planeta utilizando uma string para representar a area deste  |
-| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados </br>e uma string para representar a area deste |
+| `PUT`              | `/api/v1/planets`| Atualiza o tamanho do planeta utilizando o id deste no banco de dados </br>e uma string para representar a área deste |
 | `GET`             | `/api/v1/planets/{planetId}` | Retorna os dados ( JSON ) de um planeta utilizando o id deste no banco de dados  |
 | `DELETE`          | `/api/v1/planets/{planetId}` | Deleta um planeta e suas respectivas sondas utilizando </br>o id deste no banco de dados |
 | `GET`             | `/api/v1/planets/{planetId}/probes` | Retorna uma lista ( JSON ) com os dados de todas as sondas </br>de um respectivo planeta utilizando o id deste no banco de dados  |
@@ -34,26 +34,190 @@ Requisições para a API devem seguir os padrões:
 | `GET`             | `/api/v1/probes/{probeId}` | Retorna os dados ( JSON ) de uma sonda utilizando o id desta no banco de dados |
 | `DELETE`          | `/api/v1/probes/{probeId}` | Deleta uma sonda utilizando id desta no banco de dados |
 
-A documentação ( Swagger ) com os detalhes de como utilizar estes métodos está disponível na rota: ```/swagger-ui/```: </br>
+A documentação ( Swagger ) com os detalhes sobre como utilizar estes métodos está disponível na rota: `/swagger-ui/`: </br>
   &emsp; Uma demonstração desta está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
+ 
 
 ## Inicialização
 
-Para iniciar a api execute o seguinte comando:
+Para iniciar a api utilize o comando:
 
 ```sh
   docker-compose up
 ```
 
-Este comando irá iniciar um container com a api na porta 8080 e um container com o banco de dados utilizando a porta 5432.
+Este comando irá iniciar um contêiner com a api na porta `8080` e um contêiner com o banco de dados utilizando a porta `5432`.
 
+Para executar somente os testes utilize o comando:
+
+
+```sh
+  mvn test
+```
+
+## Exemplos
+<details>
+  <summary>Consultar todos os planetas cadastrados [ GET ]</summary>
+ 
+#### *Planetas [ /api/v1/planets ]*
+
+&emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
+
+Exemplo: `/api/v1/planets/` irá retornar um json com os dados de todos os planetas cadastrados.
+
+#### Adicionar Novo Planeta [ POST ]
+
+  &emsp;Para criar um novo planeta é necessário utilizar o parâmetro query `area` este parâmetro,
+  &emsp; utiliza uma string com o caractere x como delimitador entre altura e largura
+do retângulo utilizado para representar o planeta.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `area` | String utilizada para representar a area do planeta |
+
+Exemplo: `/api/v1/planets?area=4x2` irá criar um planeta com quatro unidades de largura e duas unidades de altura.
+
+</details>
+
+<details>
+  <summary> Editar tamanho de um planeta [ PUT ]</summary>
+  
+  #### *Planetas [ /api/v1/planets ]*
+
+  &emsp;Para editar o tamanho de um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro query `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados, além disso, é necessário informar o novo tamanho do planeta utilizando uma string com o caractere x como delimitador entre altura e largura do retângulo utilizado para representar o planeta.
+&emsp;Todas as sondas que estão fora das novas dimensões do planeta serão deletadas.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `planetId` | Id do planeta no banco de dados |
+| `area` | String utilizada para representar a área do planeta |
+
+Exemplo: `/api/v1/planets?area=5x5&id=1` irá alterar o tamanho do planeta id 1, para cinco unidades de altura e largura.
+
+</details>
+
+<details>
+  <summary> Consultar planeta por id [ GET ]</summary>
+
+ #### *Planetas /api/v1/planets/{planetId}*
+
+&emsp;Para consultar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
+
+Exemplo: `/api/v1/planets/1` irá retornar um json com os dados referente ao planeta.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `planetId` | Id do planeta no banco de dados |
+
+Exemplo: `/api/v1/planets/4` irá retornar um json com os dados do planeta.
+
+</details>
+
+<details>
+  <summary> Deletar um planeta por id [ DELETE ]</summary>
+ 
+ #### *Planetas /api/v1/planets/{planetId}*
+
+&emsp;Para deletar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
+&emsp;Todas as sondas deste planeta são deletadas ao utilizar este método.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `planetId` | Id do planeta no banco de dados |
+
+Exemplo: `/api/v1/planets/4` deleta o planeta id 4 e todas as sondas associadas a este.
+
+</details>
+
+<details>
+  <summary> Consultar todas as sondas cadastradas [ GET ]</summary>
+
+#### *Sondas [ /api/v1/probes ]*
+
+&emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
+
+Exemplo: `/api/v1/probes/` irá retornar um json com os dados de todas as sondas cadastradas.
+
+</details>
+
+<details>
+  <summary> Adicionar nova sonda [ POST ]</summary>
+  
+  #### *Sondas [ /api/v1/probes ]*
+
+  &emsp;Para criar uma nova sonda é necessário utilizar os parâmetros query `direction`, `planetId`, `X` e `Y`. Estes parâmetros representam a posição inicial da sonda no planeta.
+  &emsp;A posição inicial da sonda deve ser um dos quatro pontos cardinais ( Norte, Sul, Leste, Oeste ) em inglês ou português.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `direction` | Ponto cardinal inicial da sonda |
+| `planetId` | Id do planeta no banco de dados |
+| `X` | Coordenada x da sonda |
+| `Y` |  Coordenada y da sonda |
+
+Exemplo: `/api/v1/probes?direction=NORTE&planetId=1&x=4&y=2` irá criar uma nova sonda, no planeta id 1, nas coordenadas x4 y2, apontada para o norte.
+
+</details>
+
+<details>
+  <summary> Mover sonda [ PUT ]</summary>
+  
+  #### *Sondas [ /api/v1/probes ]*
+
+&emsp;Para mover uma sonda é necessário utilizar os parâmetros query `movements` e `probeId`.
+&emsp;O parâmetro movements é uma string onde cada caractere desta representa um movimento da sonda: :
+- `M` -> Mover a sonda uma unidade para frente.
+- `L` -> Virar a sonda para a esquerda (90 graus)
+- `R` -> Virar a sonda para a direita (90 graus)
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `movements` | Sequencia de movimentos da sonda |
+| `probeId` | Id da sonda no banco de dados |
+
+Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id 1 para uma nova direção.
+
+</details>
+
+<details>
+  <summary> Consultar sonda por id  [ GET ]</summary>
+  
+  #### *Sondas [ /api/v1/probes/{probeId} ]*
+
+&emsp;Para consultar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `probeId` | Id da sonda no banco de dados |
+
+Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
+
+</details>
+
+<details>
+  <summary> Deletar sonda por id  [ DELETE ]</summary>
+  
+  #### *Sondas [ /api/v1/probes/{probeId} ]*
+
+&emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
+
+| Parâmetro | Descrição |
+|:---:|:---:|
+| `probeId` | Id da sonda no banco de dados |
+
+Exemplo: `/api/v1/probes/1` deleta a sonda id 1 do banco de dados.
+</details>
+
+---
 
 
 <p align=left> <b>Minhas Informações de contato 📬</b></p>
 <p align=left>
 <a href="https://github.com/andersonhsporto" target="_blank"><img src="https://img.shields.io/badge/Github-181717?logo=Github&logoColor=white"/></a>  
-<a href="mailto:anderson.higo2@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-EA4335?logo=Gmail&logoColor=white"/></a> 
-<a href= "https://www.linkedin.com/in/andersonhsporto/"target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&logoColor=white"/></a> 
+<a href="mailto:anderson.higo2@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-EA4335?logo=Gmail&logoColor=white"/></a>
+<a href= "https://www.linkedin.com/in/andersonhsporto/"target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&logoColor=white"/></a>
+
+
 
 
 
