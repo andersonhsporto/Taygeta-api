@@ -49,14 +49,11 @@ Para iniciar a api execute o seguinte comando:
 Este comando irá iniciar um contêiner com a api na porta 8080 e um contêiner com o banco de dados utilizando a porta 5432.
 
 
-## Exemplos:
-
-***
-
-### *Planetas [ /api/v1/planets ]*
-
-
-#### Consultar todos os planetas cadastrados [ GET ]
+## Exemplos
+<details>
+  <summary>Consultar todos os planetas cadastrados [ GET ]</summary>
+ 
+#### *Planetas [ /api/v1/planets ]*
 
 &emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
 
@@ -74,7 +71,12 @@ do retângulo utilizado para representar o planeta.
 
 Exemplo: `/api/v1/planets?area=4x2` irá criar um planeta com quatro unidades de largura e duas unidades de altura.
 
-#### Editar tamanho de um planeta [ PUT ]
+</details>
+
+<details>
+  <summary> Editar tamanho de um planeta [ PUT ]</summary>
+  
+  #### *Planetas [ /api/v1/planets ]*
 
   &emsp;Para editar o tamanho de um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro query `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados, além disso, é necessário informar o novo tamanho do planeta utilizando uma string com o caractere x como delimitador entre altura e largura do retângulo utilizado para representar o planeta.
 &emsp;Todas as sondas que estão fora das novas dimensões do planeta serão deletadas.
@@ -86,9 +88,12 @@ Exemplo: `/api/v1/planets?area=4x2` irá criar um planeta com quatro unidades de
 
 Exemplo: `/api/v1/planets?area=5x5&id=1` irá alterar o tamanho do planeta id 1, para cinco unidades de altura e largura.
 
-#### Consultar planeta por id [ GET ]
+</details>
 
-&emsp;**/api/v1/planets/{planetId}**
+<details>
+  <summary> Consultar planeta por id [ GET ]</summary>
+
+ #### *Planetas /api/v1/planets/{planetId}*
 
 &emsp;Para consultar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
 
@@ -100,9 +105,12 @@ Exemplo: `/api/v1/planets/1` irá retornar um json com os dados referente ao pla
 
 Exemplo: `/api/v1/planets/4` irá retornar um json com os dados do planeta.
 
-#### Deletar um planeta por id [ DELETE ]
+</details>
 
-&emsp;**/api/v1/planets/{planetId}**
+<details>
+  <summary> Deletar um planeta por id [ DELETE ]</summary>
+ 
+ #### *Planetas /api/v1/planets/{planetId}*
 
 &emsp;Para deletar um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro route `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados.
 &emsp;Todas as sondas deste planeta são deletadas ao utilizar este método.
@@ -113,18 +121,23 @@ Exemplo: `/api/v1/planets/4` irá retornar um json com os dados do planeta.
 
 Exemplo: `/api/v1/planets/4` deleta o planeta id 4 e todas as sondas associadas a este.
 
-***
+</details>
 
-### *Sondas [ /api/v1/probes ]*
+<details>
+  <summary> Consultar todas as sondas cadastradas [ GET ]</summary>
 
-
-#### Consultar todas as sondas cadastradas [ GET ]
+#### *Sondas [ /api/v1/probes ]*
 
 &emsp;Ao utilizar este método na rota referente aos planetas, a api retorna uma lista ( json ) com os dados de todos os planetas cadastrados.
 
 Exemplo: `/api/v1/probes/` irá retornar um json com os dados de todas as sondas cadastradas.
 
-#### Adicionar nova sonda [ POST ]
+</details>
+
+<details>
+  <summary> Adicionar nova sonda [ POST ]</summary>
+  
+  #### *Sondas [ /api/v1/probes ]*
 
   &emsp;Para criar uma nova sonda é necessário utilizar os parâmetros query `direction`, `planetId`, `X` e `Y`. Estes parâmetros representam a posição inicial da sonda no planeta.
   &emsp;A posição inicial da sonda deve ser um dos quatro pontos cardinais ( Norte, Sul, Leste, Oeste ) em inglês ou português.
@@ -138,7 +151,12 @@ Exemplo: `/api/v1/probes/` irá retornar um json com os dados de todas as sondas
 
 Exemplo: `/api/v1/probes?direction=NORTE&planetId=1&x=4&y=2` irá criar uma nova sonda, no planeta id 1, nas coordenadas x4 y2, apontada para o norte.
 
-#### Mover sonda [ PUT ]
+</details>
+
+<details>
+  <summary> Mover sonda [ PUT ]</summary>
+  
+  #### *Sondas [ /api/v1/probes ]*
 
 &emsp;Para mover uma sonda é necessário utilizar os parâmetros query `movements` e `probeId`.
 &emsp;O parâmetro movements é uma string onde cada caractere desta representa um movimento da sonda: :
@@ -153,7 +171,12 @@ Exemplo: `/api/v1/probes?direction=NORTE&planetId=1&x=4&y=2` irá criar uma nova
 
 Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id 1 para uma nova direção.
 
-#### Consultar sonda por id  [ GET ]
+</details>
+
+<details>
+  <summary> Consultar sonda por id  [ GET ]</summary>
+  
+  #### *Sondas [ /api/v1/probes/{probeId} ]*
 
 &emsp;Para consultar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
 
@@ -163,8 +186,12 @@ Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id
 
 Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
 
+</details>
 
-#### Deletar sonda por id  [ DELETE ]
+<details>
+  <summary> Deletar sonda por id  [ DELETE ]</summary>
+  
+  #### *Sondas [ /api/v1/probes/{probeId} ]*
 
 &emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
 
@@ -173,6 +200,9 @@ Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
 | `probeId` | Id da sonda no banco de dados |
 
 Exemplo: `/api/v1/probes/1` deleta a sonda id 1 do banco de dados.
+</details>
+
+---
 
 
 <p align=left> <b>Minhas Informações de contato 📬</b></p>
