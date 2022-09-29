@@ -5,7 +5,7 @@
 
   &emsp;Taygeta é uma [API REST](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)
 que implementa uma variação do desafio [Mars Rover](https://code.google.com/archive/p/marsrovertechchallenge/), utilizando o framework
-[spring](https://spring.io/projects/spring-boot).
+[Spring](https://spring.io/projects/spring-boot).
 
 </br>
 
