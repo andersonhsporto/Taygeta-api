@@ -59,6 +59,19 @@ Para executar somente os testes utilize o comando:
   mvn test
 ```
 
+## Dependências
+&emsp;As dependecias são declaradas no arquivo [pom.xml](https://github.com/andersonhsporto/taygeta-api/blob/master/pom.xml).
+
+| Dependência                     | Decrição                                                          | Versão  |
+| :----------------------------:  | :---------------------------------------------------------------: | :-----: |
+| Postgresql                      | JDBC Driver para o banco de dados Postgresql                      | 42.5.0  |
+| H2database                      | Banco de dados relacional escrito em Java que funciona em memória | 2.1.214 |
+| Spring-boot-starter-data-jpa    | Responsável por conectar a aplicação Spring como o banco de dados | 2.7.4   |
+| Spring-boot-starter-web         | Wrapper                   | 2.7.4 |
+| Junit-jupiter                   | Wrapper                   | 5.9.1 |
+| Springfox-swagger-ui            | Wrapper                   | 3.0.0 |
+
+
 ## Exemplos
 <details>
   <summary>Consultar todos os planetas cadastrados [ GET ]</summary>
