@@ -38,7 +38,7 @@ Requisições para a API devem seguir os padrões:
 | `GET`             | `/api/v1/probes/{probeId}` | Retorna os dados ( JSON ) de uma sonda utilizando o id desta no banco de dados |
 | `DELETE`          | `/api/v1/probes/{probeId}` | Deleta uma sonda utilizando id desta no banco de dados |
 
-A documentação ( Swagger ) com os detalhes sobre como utilizar estes métodos está disponível na rota: `/swagger-ui/`: </br>
+A documentação ( Swagger ) com os detalhes sobre como utilizar estes métodos está disponível na rota `/swagger-ui/`: </br>
   &emsp; Uma demonstração desta está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
  
 
