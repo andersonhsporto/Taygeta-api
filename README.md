@@ -41,6 +41,17 @@ Requisições para a API devem seguir os padrões:
 A documentação ( Swagger ) com os detalhes sobre como utilizar estes métodos está disponível na rota `/swagger-ui/`: </br>
   &emsp; Uma demonstração desta está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
  
+  
+### Variável de ambiente
+ 
+Este projeto utiliza as seguintes variáveis de ambiente
+
+| Variavel           | Descrição                              |
+| :-----------------:| :----------------------------------:   |
+| POSTGRES_USER      | Usuário do banco de dados              |
+| POSTGRES_PASSWORD  | Senha do banco de dados                |
+| DATABASE_HOST      | Host para conexão com o banco de dados | 
+
 
 ## Inicialização
 
@@ -60,16 +71,16 @@ Para executar somente os testes utilize o comando:
 ```
 
 ## Dependências
-&emsp;As dependecias são declaradas no arquivo [pom.xml](https://github.com/andersonhsporto/taygeta-api/blob/master/pom.xml).
+&emsp;As dependências são declaradas no arquivo [pom.xml](https://github.com/andersonhsporto/taygeta-api/blob/master/pom.xml).
 
-| Dependência                     | Decrição                                                          | Versão  |
+| Dependência                     | Desrição                                                          | Versão  |
 | :----------------------------:  | :---------------------------------------------------------------: | :-----: |
 | Postgresql                      | JDBC Driver para o banco de dados Postgresql                      | 42.5.0  |
 | H2database                      | Banco de dados relacional escrito em Java que funciona em memória | 2.1.214 |
 | Spring-boot-starter-data-jpa    | Responsável por conectar a aplicação Spring como o banco de dados | 2.7.4   |
-| Spring-boot-starter-web         | Wrapper                   | 2.7.4 |
-| Junit-jupiter                   | Wrapper                   | 5.9.1 |
-| Springfox-swagger-ui            | Wrapper                   | 3.0.0 |
+| Spring-boot-starter-web         | Responsável pela camada MVC do Spring                             | 2.7.4   |
+| Junit-jupiter                   | Framework para testes unitários                                   | 5.9.1   |
+| Springfox-swagger-ui            | Documentação JSON API para aplicações Spring                      | 3.0.0   |
 
 
 ## Exemplos
