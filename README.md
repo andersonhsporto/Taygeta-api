@@ -38,19 +38,19 @@ Requisições para a API devem seguir os padrões:
 | `GET`             | `/api/v1/probes/{probeId}` | Retorna os dados ( JSON ) de uma sonda utilizando o id desta no banco de dados |
 | `DELETE`          | `/api/v1/probes/{probeId}` | Deleta uma sonda utilizando id desta no banco de dados |
 
-Os detalhes sobre como utilizar estes métodos ( Swagger UI ) está disponível na rota `/swagger-ui/`: </br>
+Os detalhes sobre como utilizar estes métodos ( Swagger UI ) estão disponíveis rota `/swagger-ui/`: </br>
   &emsp; Uma demonstração desta está disponível no link: [https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/](https://tay-prod-taygeta-ovkkud.mo1.mogenius.io/swagger-ui/)
  
-  
+ 
 ### Variável de ambiente
  
 Este projeto utiliza as seguintes variáveis de ambiente
 
-| Variavel           | Descrição                              |
+| Variável           | Descrição                              |
 | :-----------------:| :----------------------------------:   |
 | POSTGRES_USER      | Usuário do banco de dados              |
 | POSTGRES_PASSWORD  | Senha do banco de dados                |
-| DATABASE_HOST      | Host para conexão com o banco de dados | 
+| DATABASE_HOST      | Host para conexão com o banco de dados |
 
 
 ## Inicialização
@@ -73,7 +73,7 @@ Para executar somente os testes utilize o comando:
 ## Dependências
 &emsp;As dependências são declaradas no arquivo [pom.xml](https://github.com/andersonhsporto/taygeta-api/blob/master/pom.xml).
 
-| Dependência                     | Desrição                                                          | Versão  |
+| Dependência                     | Descrição                                                          | Versão  |
 | :----------------------------:  | :---------------------------------------------------------------: | :-----: |
 | Postgresql                      | JDBC Driver para o banco de dados Postgresql                      | 42.5.0  |
 | H2database                      | Banco de dados relacional escrito em Java que funciona em memória | 2.1.214 |
@@ -109,7 +109,7 @@ Exemplo: `/api/v1/planets?area=4x2` irá criar um planeta com quatro unidades de
 
 <details>
   <summary> Editar tamanho de um planeta [ PUT ]</summary>
-  
+ 
   #### *Planetas [ /api/v1/planets ]*
 
   &emsp;Para editar o tamanho de um planeta previamente cadastrado no banco de dados é necessário utilizar o parâmetro query `planetId`, este parâmetro é um número inteiro utilizado para identificar o planeta no banco de dados, além disso, é necessário informar o novo tamanho do planeta utilizando uma string com o caractere x como delimitador entre altura e largura do retângulo utilizado para representar o planeta.
@@ -170,7 +170,7 @@ Exemplo: `/api/v1/probes/` irá retornar um json com os dados de todas as sondas
 
 <details>
   <summary> Adicionar nova sonda [ POST ]</summary>
-  
+ 
   #### *Sondas [ /api/v1/probes ]*
 
   &emsp;Para criar uma nova sonda é necessário utilizar os parâmetros query `direction`, `planetId`, `X` e `Y`. Estes parâmetros representam a posição inicial da sonda no planeta.
@@ -189,11 +189,11 @@ Exemplo: `/api/v1/probes?direction=NORTE&planetId=1&x=4&y=2` irá criar uma nova
 
 <details>
   <summary> Mover sonda [ PUT ]</summary>
-  
+ 
   #### *Sondas [ /api/v1/probes ]*
 
 &emsp;Para mover uma sonda é necessário utilizar os parâmetros query `movements` e `probeId`.
-&emsp;O parâmetro movements é uma string onde cada caractere desta representa um movimento da sonda: :
+&emsp;O parâmetro `movements` é uma string onde cada caractere desta representa um movimento da sonda: :
 - `M` -> Mover a sonda uma unidade para frente.
 - `L` -> Virar a sonda para a esquerda (90 graus)
 - `R` -> Virar a sonda para a direita (90 graus)
@@ -209,10 +209,10 @@ Exemplo: `/api/v1/probes?movements=LMLMLMLMM&probeId=1` irá mover a sonda de id
 
 <details>
   <summary> Consultar sonda por id  [ GET ]</summary>
-  
+ 
   #### *Sondas [ /api/v1/probes/{probeId} ]*
 
-&emsp;Para consultar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
+&emsp;Para consultar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route `probeId`, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
 
 | Parâmetro | Descrição |
 |:---:|:---:|
@@ -224,10 +224,10 @@ Exemplo: `/api/v1/probes/1` retorna um json com os dados da sonda id 1.
 
 <details>
   <summary> Deletar sonda por id  [ DELETE ]</summary>
-  
+ 
   #### *Sondas [ /api/v1/probes/{probeId} ]*
 
-&emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route probeId, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
+&emsp;Para deletar uma sonda previamente cadastrada no banco de dados é necessário utilizar o parâmetro route `probeId`, este parâmetro é um número inteiro utilizado para identificar a sonda no banco de dados.
 
 | Parâmetro | Descrição |
 |:---:|:---:|
@@ -239,14 +239,8 @@ Exemplo: `/api/v1/probes/1` deleta a sonda id 1 do banco de dados.
 ---
 
 
-<p align=left> <b>Minhas Informações de contato 📬</b></p>
+<p align=left> <b>Minhas informações de contato 📬</b></p>
 <p align=left>
 <a href="https://github.com/andersonhsporto" target="_blank"><img src="https://img.shields.io/badge/Github-181717?logo=Github&logoColor=white"/></a>  
 <a href="mailto:anderson.higo2@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-EA4335?logo=Gmail&logoColor=white"/></a>
 <a href= "https://www.linkedin.com/in/andersonhsporto/"target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&logoColor=white"/></a>
-
-
-
-
-
-
