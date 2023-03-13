@@ -1,6 +1,6 @@
 # Taygeta API
 <p align="center">
-<img src="https://github.com/andersonhsporto/taygeta-api/blob/master/img/star.jpg" width="300px" alt="Taygeta Star"/><br>
+<img src="https://user-images.githubusercontent.com/47704550/224849614-8d24bb77-d3f1-48e2-8a87-4a1a66874bd6.jpg" width="300px" alt="Taygeta Star"/><br>
 </p>
 
   &emsp;Taygeta é uma [API REST](https://www.redhat.com/pt-br/topics/api/what-is-a-rest-api)
